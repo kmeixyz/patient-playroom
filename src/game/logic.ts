@@ -45,7 +45,7 @@ export function makeSky(rng:RNG=Math.random):SkyState {const items:SkyItem[]=[];
 export function skyLane(state:SkyState,d:number):SkyState{return{...state,lane:Math.max(-1,Math.min(1,state.lane+d))}}
 export function skyJump(state:SkyState):SkyState{return state.cooldown>0?state:{...state,air:.8,cooldown:1.15}}
 export function advanceSky(state:SkyState,dt:number,speed=10):SkyState {if(!Number.isFinite(dt)||dt<=0)return state;const next={...state,distance:state.distance+dt*speed,air:Math.max(0,state.air-dt),cooldown:Math.max(0,state.cooldown-dt)};next.items=state.items.map(item=>{if(item.hit||item.distance<=state.distance||item.distance>next.distance||item.lane!==state.lane)return item;if(item.kind==='gem'){next.gems++;next.combo++;next.score+=10*Math.min(3,Math.floor((next.combo-1)/4)+1)}else {const hitAt=(item.distance-state.distance)/speed;if(state.air-hitAt<=.12){next.bumps++;next.combo=0}}return{...item,hit:true}});return next}
-export type OrbitState={popped:number;bonus:number;slots:number[];lastPop:number}
+export type OrbitState={popped:number;bonus:number;slots:number[];lastPop:number;lastSlot:number}
 export const orbitBonusSlot=(popped:number)=>(popped*5+2)%6
-export function newOrbit():OrbitState{return{popped:0,bonus:0,slots:[0,1,2,3,4,5],lastPop:-Infinity}}
-export function popOrbit(state:OrbitState,id:number,now:number):OrbitState{const slot=state.slots.indexOf(id);if(slot===-1||state.popped>=18||now-state.lastPop<150)return state;const slots=[...state.slots];slots[slot]=6+state.popped;return{popped:state.popped+1,bonus:state.bonus+(slot===orbitBonusSlot(state.popped)?1:0),slots,lastPop:now}}
+export function newOrbit():OrbitState{return{popped:0,bonus:0,slots:[0,1,2,3,4,5],lastPop:-Infinity,lastSlot:-1}}
+export function popOrbit(state:OrbitState,id:number,now:number):OrbitState{const slot=state.slots.indexOf(id);if(slot===-1||state.popped>=18||!Number.isFinite(now)||(slot===state.lastSlot&&now-state.lastPop<150))return state;const slots=[...state.slots];slots[slot]=6+state.popped;return{popped:state.popped+1,bonus:state.bonus+(slot===orbitBonusSlot(state.popped)?1:0),slots,lastPop:now,lastSlot:slot}}

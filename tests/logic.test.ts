@@ -37,7 +37,7 @@ describe('Sky Dash',()=>{
 })
 describe('Orbit Pop',()=>{
   it('awards an optional bonus only for the spotlighted planet',()=>{const s=newOrbit();expect(popOrbit(s,2,0).bonus).toBe(1);expect(popOrbit(s,1,0).bonus).toBe(0)})
-  it('rejects stale target IDs, double taps and stops at 18',()=>{let s=newOrbit();s=popOrbit(s,0,0);expect(s.popped).toBe(1);expect(popOrbit(s,0,200)).toBe(s);expect(popOrbit(s,1,100)).toBe(s);for(let n=1;n<18;n++){s=popOrbit(s,s.slots[n%6]!,n*200);expect(new Set(s.slots).size).toBe(6)}expect(s.popped).toBe(18);expect(popOrbit(s,s.slots[0]!,5000)).toBe(s)})
+  it('rejects stale target IDs, double taps and stops at 18',()=>{let s=newOrbit();s=popOrbit(s,0,0);expect(s.popped).toBe(1);expect(popOrbit(s,0,200)).toBe(s);expect(popOrbit(s,s.slots[0]!,100)).toBe(s);expect(popOrbit(s,1,100).popped).toBe(2);for(let n=1;n<18;n++){s=popOrbit(s,s.slots[n%6]!,n*200);expect(new Set(s.slots).size).toBe(6)}expect(s.popped).toBe(18);expect(popOrbit(s,s.slots[0]!,5000)).toBe(s)})
 })
 describe('short-session clock',()=>{
   it('repairs malformed device counters and tolerates blocked storage',()=>{let value=JSON.stringify({version:1,sessions:'bad',games:{sky:{starts:-5,seconds:'no',finishes:NaN}}});vi.stubGlobal('localStorage',{getItem:()=>value,setItem:(_k:string,v:string)=>{value=v}});expect(getStats().sessions).toBe(0);recordStart('sky');recordFinish('sky');expect(getStats().games.sky).toEqual({starts:1,seconds:0,finishes:1});vi.stubGlobal('localStorage',{getItem:()=>{throw Error('blocked')},setItem:()=>{throw Error('blocked')}});expect(()=>recordStart('sky')).not.toThrow();vi.unstubAllGlobals()})

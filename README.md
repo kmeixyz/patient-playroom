@@ -26,13 +26,13 @@ npm ci
 npm run dev -- --host 127.0.0.1 --port 5173
 ```
 
-Routes: `/` is the game library. `/#brief` retains the original stakeholder brief for reference. The earlier brief's no-timer/no-score decisions are superseded by this redesign's short, low-pressure rounds. The player-facing “How it works” explains the current behavior.
+The game library is the only route. The Design brief and its source files have been removed. “How it works” explains the current behavior.
 
 ```sh
 npm run build       # TypeScript and production Vite build
 npm run preview     # Serve the production build
 npm test            # Pure rules, generated puzzles and timing invariants
-npm run smoke       # Render both routes and verify core content
+npm run smoke       # Render the library and verify removed controls stay absent
 npm run test:e2e    # Desktop + emulated phone Chrome tests; keep dev server running
 ```
 
@@ -41,15 +41,15 @@ The browser suite uses installed Chrome (`channel: chrome`). If needed, install 
 ## Behavior and accessibility
 
 - Sound is off on every app load, uses quiet synthesized tones, and is never required to play. Fonts and imagery are served locally.
-- “Less motion” begins with the operating-system preference. It removes decorative motion; Sky Dash changes to a steadier overhead view. Track-item motion remains essential to that game.
+- The device reduced-motion preference is respected automatically, including changes while the app is open. Decorative motion stops and Sky Dash uses a steadier view. The leaf toggle has been removed.
 - Every game supports keyboard and touch controls. The appointment button remains labeled on phones. Interactive controls have visible focus, with explicit feedback for matching, turns, hints and results.
-- Native modal focus handling in the staff data panel. Opening it pauses the game; closing it leaves the game paused until the player resumes.
+- Keyboard focus moves directly into games and pause/results screens. Single-key shortcuts only work when focus is inside the relevant game.
 - WebGL failure or context loss switches the adventures to a playable flat view. Scenes dispose their geometries, materials, renderer, observers, events and animation frame on exit.
 - A monotonic active-play clock has one completion guard, so StrictMode, delayed callbacks and throttled tabs cannot record a completion twice.
 
 ## Data
 
-No patient information is requested. The retained pilot counters record only aggregate app opens, game starts, active seconds and rounds finished in `localStorage` under `mvp.pilot.v1`. “Rounds finished” includes a round ended by its time cap; an appointment exit does not count as a finished round. Counters can be copied or cleared. Malformed or unavailable storage cannot block play. The game code sends no analytics to a server.
+No patient information is requested. The retained pilot counters record only aggregate app opens, game starts, active seconds and rounds finished in `localStorage` under `mvp.pilot.v1`. “Rounds finished” includes a round ended by its time cap; an appointment exit does not count as a finished round. The staff-data interface is removed; these local counters can be cleared with the browser’s site data. Malformed or unavailable storage cannot block play. The game code sends no analytics to a server.
 
 ## Implementation
 
@@ -63,13 +63,13 @@ No patient information is requested. The retained pilot counters record only agg
 - `tests/logic.test.ts` and `tests/e2e/playroom.spec.ts`: repeatable verification.
 - `public/art/PROVENANCE.md`: exact prompts for both original cover images.
 
-The original editable room and creature illustrations are retained for discovery play. Generated art is cover art, not a screenshot of the 3D gameplay. Cover files are WebP, approximately 177 KB and 218 KB; 3D code loads only when selecting a 3D game.
+The original editable room and creature illustrations are retained for discovery play. Generated art is cover art, not a screenshot of the 3D gameplay. The 3D worlds now echo the covers with segmented lavender arches, a curved mint track, floating islands, waterfalls, a glowing hoverboard, a headphone robot, orbit rings, cratered planets and crystals. Bounded particles and shared/instanced geometry keep effects lightweight. Cover files are WebP, approximately 177 KB and 218 KB; 3D code loads only when selecting a 3D game.
 
 ## Validation scope
 
 The rule suite checks hundreds of maze and word-search seeds, every reachable nonterminal tic-tac-toe board, merge conservation and single-merge rules, memory input locking, collision and jump timing, stale planet targets, optional bonuses, device counters and pause timing. Browser tests cover all ten game flows, complete playthroughs, touch/keyboard controls, time caps, appointment exits, hidden tabs, motion preferences, graphics fallbacks, storage failure, accessibility, and responsive layouts.
 
-These tests establish the implemented behavior. They do not establish clinical effectiveness or enjoyment for every patient. Physical iOS/Safari, screen-reader user testing, and observation with patients and hospital staff have not been performed.
+See [ACCESSIBILITY.md](ACCESSIBILITY.md) for the criterion scope and remaining assistive-technology validation. These tests establish the implemented behavior. They do not establish clinical effectiveness or enjoyment for every patient. Physical iOS/Safari, screen-reader user testing, and observation with patients and hospital staff have not been performed.
 
 ## Hosting
 

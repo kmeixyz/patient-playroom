@@ -1,0 +1,173 @@
+/* Mobile-first refinements and contrast tokens shared by every activity. */
+:root { --sans: var(--font-body); --display: var(--font-display); --muted: #485369; --line: #d2d8e4; }
+html { -webkit-text-size-adjust: 100%; }
+body { -webkit-font-smoothing: antialiased; }
+[hidden] { display: none !important; }
+button, a, [tabindex] { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, [tabindex="0"]:focus-visible { outline: 3px solid #253cab; outline-offset: 3px; box-shadow: 0 0 0 6px #fff; }
+button:disabled, .secondary-button:disabled, .primary-button:disabled { opacity: 1; background: #e7eaf0; color: #536075; box-shadow: none; }
+.primary-button { transition: transform .18s ease, box-shadow .18s ease; }
+.app-header { background: var(--paper); }
+.feature-shade { background: linear-gradient(90deg, #102c43f5 0%, #102c43ed 27%, #102c4399 55%, #102c4320 100%); }
+.feature-orbit .feature-shade { background: linear-gradient(90deg, #0a103af5 0%, #0a103aee 35%, #0a103a77 75%, #0a103a33); }
+.feature-content p { text-shadow: none; max-width: 22ch; }
+.feature-corner { background: #123249; padding: .3rem .65rem; border-radius: 12px; }
+.cover-cards>span:nth-child(2) { background: #925078; }
+.theme-purple { --cover-ink: #624990; }
+.theme-pink { --cover-ink: #8a355f; }
+.theme-yellow { --cover-ink: #755014; }
+.theme-orange { --cover-ink: #8c4828; }
+.theme-blue { --cover-ink: #285994; }
+.round-progress { background: #dae0ee; }
+.round-progress>span { background: #455db5; }
+.maze-tile.wall { background: #8772b1; box-shadow: inset 0 -3px #72599f; }
+.maze-tile.player { color: #20388b; background: #cbd9ff; }
+.maze-tile.hint { outline: 2px dashed #785410; outline-offset: -2px; }
+.word-board>button { min-height: 36px; border: 1px solid #8da694; color: #244b37; }
+.word-board>button.selected { color: white; outline: 3px solid #263f94; outline-offset: -3px; }
+.word-board>button.hint { border: 2px dashed #705016; }
+.word-board>button.found { text-decoration: underline; text-underline-offset: 3px; }
+.word-list>span.found { color: #1e5136; }
+.memory-card { background: #74599c; }
+.memory-card.open { color: #812c58; border-color: #9a5278; }
+.memory-card.matched { color: #265c37; border-color: #648f70; }
+.direction-pad button { color: #2f447f; border-color: #8896b4; }
+.merge-tile { color: #4a341c; }
+.merge-tile.value-64 { color: #32170e; }
+.ttt-board>button.mark-o { color: #81421b; }
+.ttt-board>button { border-color: #7c8ba6; }
+.merge-tile { border: 1px solid #816c49; }
+.merge-tile.value-0 { border-color: #816c49; }
+.playroom .g-stage__svg { width: 100%; min-width: 0; }
+.playroom .g-room { border-color: #97a2b4; color: #35415a; }
+.playroom .g-room.is-current { background: #e6edff; border-color: #3c559d; color: #2b4281; }
+.playroom .g-caption { color: #3f4f65; }
+.playroom .g-hotspot:focus-visible { outline: 3px solid #183b90; stroke: white; stroke-width: 4px; }
+.playroom .g-hotspot:not(.g-hotspot--bare):not(.is-found) { stroke: #263f60; stroke-width: 2.5px; paint-order: stroke; filter: drop-shadow(1px 0 #fff) drop-shadow(-1px 0 #fff) drop-shadow(0 1px #fff) drop-shadow(0 -1px #fff); }
+.playroom .g-target { color: #283f58; }
+.playroom .g-target.is-found { opacity: 1; }
+.playroom .g-dot { border: 2px solid #70829a; }
+.playroom .g-dot.is-on { background: #365ca3; border-color: #365ca3; }
+.word-actions { flex-wrap: wrap; }
+.board-actions, .mode-picker, .puzzle-status { flex-wrap: wrap; }
+.beat-pads { gap: 1rem; }
+.beat-pad { color: #4f295c; }
+.beat-pad.selected { outline: 3px solid #4f295c; outline-offset: 3px; }
+.beat-pad>span { color: #4f295c; opacity: 1; }
+.has-active-game .app-footer { display: none; }
+.has-active-game .top-links { display: none; }
+
+/* Adventure UI uses opaque surfaces: artwork never determines text contrast. */
+.adventure-session .play-shell { border-color: #a5b7c9; }
+.three-game { --adventure-ink: #173d3a; --adventure-ground: #e7f7ed; --adventure-line: #648e7c; background: var(--adventure-ground); color: var(--adventure-ink); }
+.orbit-game { --adventure-ink: #eaf6ff; --adventure-ground: #101b40; --adventure-line: #6b81aa; }
+.three-hud, .orbit-game .three-hud { padding: .75rem 1rem; min-height: 66px; gap: .7rem; background: var(--adventure-ground); color: var(--adventure-ink); border-bottom: 1px solid var(--adventure-line); }
+.three-hud>span { font-size: .85rem; gap: .5rem; min-width: 0; }
+.three-hud strong { font-size: 1.35rem; font-weight: 950; }
+.hud-stat>svg { color: #70521b; }
+.orbit-game .hud-stat>svg { color: #92eaff; }
+.hud-streak { background: #d5eee0; border-radius: 12px; padding: .2rem .65rem; color: #254d3e; }
+.orbit-game .hud-streak { background: #263559; color: #ffe1a0; }
+.three-stage { height: 460px; isolation: isolate; }
+.sky-game .three-stage { touch-action: none; }
+.three-stage canvas { z-index: -1; }
+.adventure-feedback { display: flex; align-items: center; justify-content: center; gap: .5rem; min-height: 44px; padding: .55rem .8rem; text-align: center; font-size: .88rem; font-weight: 850; color: var(--adventure-ink); background: var(--adventure-ground); }
+.sky-controls { padding: .25rem .85rem .85rem; gap: .65rem; }
+.steer-button { color: #173d3a; background: #fafffc; border-color: #648e7c; box-shadow: 0 3px #a6c6b5; min-height: 58px; }
+.jump-button { color: #143c32; background: #b6efca; border-color: #487b5d; min-height: 58px; box-shadow: 0 3px #7fac93; }
+.jump-button[aria-disabled="true"] { background: #e3ebe4; color: #3b5347; box-shadow: none; }
+.jump-button>span { color: #264f3b; }
+.journey-progress { position: relative; height: 7px; margin: .4rem 1.5rem .7rem; border-radius: 8px; background: #b8d1c4; }
+.journey-progress>span { display: block; height: 100%; background: #36674c; border-radius: inherit; transition: width .15s linear; }
+.journey-progress>svg { position: absolute; right: 0; top: -7px; color: #254c36; background: var(--adventure-ground); }
+.journey-stops { display: flex; justify-content: space-between; gap: .5rem; margin: 0 1.3rem .3rem; color: #365347; font-size: .75rem; }
+.journey-stops>.current { font-weight: 950; text-decoration: underline; text-underline-offset: 3px; }
+.three-note { color: var(--adventure-ink); font-size: .8rem; padding: .4rem .9rem .9rem; }
+.lane-labels { bottom: .6rem; gap: .45rem; }
+.lane-labels>span { color: #28483e; background: #f3fff9; border: 1px solid #6a917f; }
+.lane-labels>.current { background: #214c3a; color: white; border-color: #214c3a; }
+.planet-target { width: 82px; height: 82px; align-items: flex-end; }
+.planet-target>span { width: 30px; height: 30px; background: #edfaff; color: #102848; border: 2px solid #183759; font-size: .9rem; }
+.planet-target>svg { position: absolute; right: -4px; top: -2px; color: #392811; padding: 3px; box-sizing: content-box; border-radius: 50%; background: #ffe29b; }
+.planet-target.bonus-target { outline: 2px dashed #ffe29b; outline-offset: 3px; }
+.planet-target:focus-visible, .planet-target.bonus-target:focus-visible { outline: 3px solid white; outline-offset: 5px; box-shadow: 0 0 0 8px #153b6c; }
+.orbit-buddy-label { position: absolute; bottom: .6rem; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: .4rem; white-space: nowrap; padding: .3rem .65rem; background: #172849; color: #e3faff; border: 1px solid #688bb8; border-radius: 12px; font-size: .75rem; font-weight: 850; pointer-events: none; }
+.orbit-energy { display: grid; grid-template-columns: repeat(18,minmax(0,1fr)); gap: 4px; margin: .25rem 1.2rem .6rem; }
+.orbit-energy>span { height: 12px; border: 1px solid #7287ab; background: #1f3058; border-radius: 3px; }
+.orbit-energy>span.charged { border-color: #a6ffee; background: #91f4d9; animation: charge-in .3s ease-out; }
+.bonus-description { display: flex; justify-content: center; gap: .4rem; align-items: center; color: #ffe3aa; font-size: .86rem; font-weight: 800; }
+.flat-mode .three-stage canvas { display: none; }
+.flat-mode .planet-target>svg { display: block; }
+.graphics-note { color: #293e5a; background: #eff3fa; }
+@keyframes charge-in { from { transform: scaleY(.3); } to { transform: scaleY(1); } }
+
+@media (max-width: 760px) {
+  .app-header { padding: .65rem max(.85rem, env(safe-area-inset-right)) .65rem max(.85rem, env(safe-area-inset-left)); min-height: 68px; }
+  .brand { font-size: 1.1rem; }
+  .app-header .brand-patient { display: none; }
+  .app-header .appointment-button .appointment-long { display: inline; font-size: .8rem; }
+  .app-header .appointment-button .appointment-short { display: none; }
+  .app-header .header-actions { gap: .2rem; }
+  .appointment-button { margin-left: 0; padding: .6rem .75rem; }
+  .app-header .sound-button { min-width: 44px; }
+  .library-main { padding: 1.6rem 1rem; }
+  .session-main { padding: .8rem .6rem max(.7rem, env(safe-area-inset-bottom)); }
+  .session-heading { grid-template-columns: 1fr auto; gap: .3rem .5rem; margin-bottom: .65rem; }
+  .session-heading>div { text-align: left; grid-row: 1; grid-column: 1; }
+  .session-heading h1 { font-size: 1.5rem; }
+  .session-heading>div>span { display: none; }
+  .session-heading>.text-button { grid-row: 2; grid-column: 1; min-height: 44px; padding: .25rem 0; font-size: .8rem; }
+  .session-heading>.pause-button { grid-row: 1 / 3; grid-column: 2; min-width: 76px; min-height: 46px; }
+  .play-shell { border-radius: 18px; }
+  .round-bar { padding: .5rem .8rem; min-height: 38px; }
+  .adventure-session .game-surface { min-height: 0; }
+  .three-hud, .orbit-game .three-hud { padding: .45rem .75rem; gap: .4rem; min-height: 54px; }
+  .three-hud>span { font-size: .75rem; gap: .3rem; }
+  .three-hud strong { font-size: 1.1rem; }
+  .three-hud>span>svg { width: 19px; height: 19px; }
+  .hud-streak { padding: .25rem .45rem; }
+  .three-stage, .sky-game .three-stage { height: clamp(270px, 43svh, 410px); }
+  .planet-target { width: 72px; height: 72px; }
+  .sky-controls { gap: .5rem; padding: .25rem .6rem .8rem; }
+  .steer-button { flex: 1; min-width: 0; font-size: .85rem; padding: .6rem; min-height: 56px; }
+  .jump-button { flex: 1.2; justify-content: center; font-size: .85rem; min-height: 56px; padding: .6rem .3rem; }
+  .jump-button>span { display: none; }
+  .adventure-feedback { font-size: .78rem; min-height: 40px; }
+  .journey-stops { font-size: .7rem; margin-inline: 1rem; }
+  .journey-progress { margin-inline: 1rem; }
+  .three-note { font-size: .75rem; padding-bottom: .65rem; }
+  .orbit-energy { margin-inline: 1rem; gap: 3px; }
+  .bonus-description { font-size: .8rem; }
+  .session-reminder { margin: .4rem 0; font-size: .75rem; }
+  .session-reminder button { min-height: 44px; }
+  .word-board>button { min-height: 36px; font-size: 1rem; }
+  .playroom .g-stage { overflow: visible; }
+  .game-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr)); }
+}
+@media (max-width: 350px) {
+  .brand-symbol { display: none; }
+  .app-header .appointment-button .appointment-long { display: none; }
+  .app-header .appointment-button .appointment-short { display: inline; }
+  .three-hud>span>svg { display: none; }
+  .planet-target { width: 64px; height: 64px; }
+  .word-board>button { min-height: 32px; }
+}
+@media (max-height: 520px) and (orientation: landscape) {
+  .adventure-session .three-stage { height: 280px; }
+  .app-header { position: static; }
+}
+@media (prefers-contrast: more) {
+  :root { --muted: #263249; --line: #65748c; }
+  button, .game-card, .play-shell { border-color: #52617c; }
+  .feature-shade, .feature-orbit .feature-shade { background: #071829d9; }
+}
+@media (forced-colors: active) {
+  button, .game-card, .memory-card, .maze-tile.wall, .word-board>button { border: 1px solid ButtonText; }
+  .maze-tile.wall { background: CanvasText; forced-color-adjust: none; }
+  .maze-tile.player, .word-board>button.selected { outline: 3px solid Highlight; }
+  .planet-target>span, .planet-target>svg { forced-color-adjust: none; }
+  .round-progress>span, .orbit-energy>span.charged { background: Highlight; forced-color-adjust: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

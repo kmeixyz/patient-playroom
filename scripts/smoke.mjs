@@ -1,79 +1,14 @@
-// Renders the game and the brief once with react-dom/server to catch runtime
-// errors and confirm the key content is present. Run: node scripts/smoke.mjs
 import { build } from 'esbuild'
 import { createRequire } from 'node:module'
 import { renderToString } from 'react-dom/server'
 import { createElement } from 'react'
-
 const require = createRequire(import.meta.url)
-
-const result = await build({
-  stdin: {
-    contents: `
-      export { GameApp } from './src/game/GameApp'
-      export { BriefPage } from './src/brief/BriefPage'
-    `,
-    resolveDir: process.cwd(),
-    loader: 'ts',
-  },
-  bundle: true,
-  write: false,
-  format: 'cjs',
-  jsx: 'automatic',
-  platform: 'node',
-  external: ['react', 'react-dom'],
-  loader: { '.css': 'empty' },
-})
-
+const result = await build({ stdin: { contents: "export { GameApp } from './src/game/GameApp'", resolveDir: process.cwd(), loader: 'ts' }, bundle: true, write: false, format: 'cjs', jsx: 'automatic', platform: 'node', external: ['react', 'react-dom'], loader: { '.css': 'empty' } })
 const module = { exports: {} }
-new Function('require', 'module', 'exports', result.outputFiles[0].text)(
-  require,
-  module,
-  module.exports,
-)
-
-const checks = [
-  {
-    name: 'game',
-    html: renderToString(createElement(module.exports.GameApp)),
-    expect: [
-      'Patient Playroom home',
-      'Make room for',
-      'Sky Dash',
-      'Orbit Pop',
-      'Match Club',
-      'Three in a Row',
-      'Maze Quest',
-      'Beat Garden',
-      'Turn sound on',
-      'Design brief',
-    ],
-  },
-  {
-    name: 'brief',
-    html: renderToString(createElement(module.exports.BriefPage)),
-    expect: [
-      'Pediatric Outpatient Waiting-Room Game',
-      'Executive Summary',
-      'Design Hypothesis',
-      'Pilot Questions &amp; Measures',
-      'Definition of a successful project',
-      'id="brief-summary"',
-    ],
-  },
-]
-
-let failed = false
-for (const check of checks) {
-  const missing = check.expect.filter((needle) => !check.html.includes(needle))
-  if (missing.length) {
-    failed = true
-    console.error(`[${check.name}] missing from output:`, missing)
-  } else {
-    console.log(
-      `[${check.name}] rendered ${check.html.length} chars; ${check.expect.length} checks passed.`,
-    )
-  }
-}
-
-process.exit(failed ? 1 : 0)
+new Function('require', 'module', 'exports', result.outputFiles[0].text)(require, module, module.exports)
+const html = renderToString(createElement(module.exports.GameApp))
+const required = ['Patient Playroom home', 'Make room for', 'Sky Dash', 'Orbit Pop', 'Match Club', 'Three in a Row', 'Maze Quest', 'Beat Garden', 'Turn sound on', 'My appointment']
+const missing = required.filter(text => !html.includes(text))
+const removed = ['Design brief', 'Pilot data', 'Less motion'].filter(text => html.includes(text))
+if (missing.length || removed.length) { console.error({ missing, removed }); process.exit(1) }
+console.log(`Game library rendered: ${required.length} content checks; removed controls absent.`)
