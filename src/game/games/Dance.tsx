@@ -1,63 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import { CreatureIcon, creatureKinds, creatureNames } from '../creatures'
-import { playCue } from '../sound'
-
-const moves = ['bob', 'sway', 'hop', 'nod', 'wiggle', 'turn']
-
-/**
- * The lowest-effort activity in the set: tap a character and it moves for a
- * moment. Motion is slow and small, and nothing flashes.
- */
-export function Dance() {
-  const [active, setActive] = useState<Record<string, string>>({})
-  const timers = useRef<Record<string, number>>({})
-
-  useEffect(
-    () => () => {
-      Object.values(timers.current).forEach((id) => window.clearTimeout(id))
-    },
-    [],
-  )
-
-  const start = (kind: string, index: number) => {
-    if (timers.current[kind]) window.clearTimeout(timers.current[kind])
-    const move = moves[index % moves.length]!
-    setActive((prev) => ({ ...prev, [kind]: move }))
-    playCue('tap')
-    timers.current[kind] = window.setTimeout(() => {
-      setActive((prev) => {
-        const next = { ...prev }
-        delete next[kind]
-        return next
-      })
-    }, 2200)
-  }
-
-  const allDance = () => creatureKinds.forEach((kind, i) => start(kind, i))
-
-  return (
-    <div className="g-play">
-      <p className="g-hint">Tap a friend to make them move.</p>
-
-      <div className="g-dance">
-        {creatureKinds.map((kind, i) => (
-          <button
-            key={kind}
-            type="button"
-            className={`g-dancer ${active[kind] ? `is-${active[kind]}` : ''}`}
-            onClick={() => start(kind, i)}
-            aria-label={`Make ${creatureNames[kind]} move`}
-          >
-            <CreatureIcon kind={kind} size={72} />
-          </button>
-        ))}
-      </div>
-
-      <div className="g-status">
-        <button type="button" className="g-btn g-btn--quiet" onClick={allDance}>
-          Everybody dance
-        </button>
-      </div>
-    </div>
-  )
+import { CreatureIcon } from '../creatures'
+import { Icon } from '../Icons'
+import { playNote } from '../sound'
+import { useGame } from '../useGame'
+const notes=[{label:'Bass',key:'1',note:130.81,icon:'music',kind:'cat'},{label:'Chime',key:'2',note:329.63,icon:'sparkle',kind:'bunny'},{label:'Pop',key:'3',note:392,icon:'heart',kind:'dino'},{label:'Glow',key:'4',note:523.25,icon:'star',kind:'owl'}]as const
+export function Dance(){const{paused}=useGame(),[taps,setTaps]=useState(0),[selected,setSelected]=useState<number|null>(null),[beat,setBeat]=useState(0),action=useRef((_i:number)=>{})
+  const tap=(i:number)=>{if(paused)return;setSelected(i);setBeat(n=>n+1);setTaps(n=>n+1);playNote(notes[i]!.note)};action.current=tap
+  useEffect(()=>{const key=(e:KeyboardEvent)=>{if(e.altKey||e.ctrlKey||e.metaKey||e.repeat)return;const i=Number(e.key)-1;if(i>=0&&i<4){e.preventDefault();action.current(i)}};window.addEventListener('keydown',key);return()=>window.removeEventListener('keydown',key)},[])
+  return <div className="puzzle-area beat-area"><div className="beat-friends" aria-hidden="true">{notes.map((n,i)=><span key={`${i}-${selected===i?beat:0}`} className={selected===i?'dancing':''}><CreatureIcon kind={n.kind} size={90}/></span>)}</div><h2>Make your own kind of music.</h2><p>Sound off? Your friends still feel the beat.</p><div className="beat-pads" role="group" aria-label="Music pads">{notes.map((n,i)=><button key={n.key} className={`beat-pad beat-${i} ${selected===i?'selected':''}`} onClick={()=>tap(i)} aria-label={`Play ${n.label}, key ${n.key}`}><Icon name={n.icon} size={38} weight="fill"/><strong>{n.label}</strong><span>{n.key}</span></button>)}</div><p className="control-note" aria-live="polite">{taps} beats, all yours.</p></div>
 }

@@ -1,142 +1,78 @@
-# Waiting Room Playground — MVP prototype
+# Patient Playroom
 
-A web version of the **Medical Virtual Playground (MVP)**: a mobile-first
-collection of short, low-pressure activities for children waiting in a pediatric
-outpatient waiting room or clinic room.
+A complete redesign of the existing React waiting-room playground for pediatric patients, particularly young teens. Ten seated, short-session games, original cover art, genuine Three.js adventures, and an instant appointment exit.
 
-The repo holds two things:
+## Play
 
-| Route | What it is |
-| --- | --- |
-| `/` | The playable prototype — six activities a child can start and stop freely |
-| `/#brief` | The design brief the prototype is built from, as a readable site |
-
-## Getting started
-
-```bash
-npm install
-npm run dev
-```
-
-The dev server prints a local URL (default `http://localhost:5173`) and opens it
-automatically. It is designed for a phone screen — use your browser's device
-toolbar at ~390×844 to see it as a family would.
-
-## The activities
-
-| Activity | What the child does | Why it is in the set |
+| Game | How it works | Maximum active round |
 | --- | --- | --- |
-| Look around | Taps chairs, a door, a fish tank, a drawer to reveal a hidden friend | Visual discovery and connection to the room |
-| I spy | Finds five friends hiding in the room, with a Help button | Simple rules, brief play, no way to get stuck |
-| Find pairs | Turns over cards to match pairs | Familiar, repeatable, gentle reinforcement |
-| Three in a row | Tic-tac-toe against the app or a caregiver | Familiar and easy to understand |
-| Maze | Slides a character through a fresh maze to a flag | Focus without a learning curve |
-| Silly dance | Taps a character to make it move for a moment | Lowest-effort, humorous interaction |
+| Sky Dash | Steer a hoverboard across three lanes, collect gems, jump coral blocks, build a collection combo. Bumps never end the ride. | 75 seconds |
+| Orbit Pop | Collect 18 planets. Follow the gold-ring bonus target for an extra spotting challenge. | 60 seconds |
+| Maze Quest | Solve a fresh connected maze with arrow keys, direction buttons or one-step swipes. Hint reveals the next step. | 3 minutes |
+| Match Club | Match six pairs; mismatches briefly lock input and then turn back. | 3 minutes |
+| Merge 128 | Familiar sliding-number puzzle: combine equal numbers, aiming for 128. Includes one-step undo. | 3 minutes |
+| Three in a Row | Tic-tac-toe with a tactical computer or another person on the same device. | 2 minutes |
+| Word Scout | Find five space words using their endpoints, forwards or backwards, including diagonals. | 3 minutes |
+| Hidden Friends | Find five characters in either of two illustrated rooms; help highlights one. | 2 minutes |
+| Room Explorer | Discover the original hidden friends by tapping objects in either room. | 2 minutes |
+| Beat Garden | Play four musical pads and animate the original characters with taps or keys 1–4. | 60 seconds |
 
-Two illustrated rooms — a waiting room and a clinic room — back the first two
-activities, so play continues after the child is called back.
+All games stop on completion or at the maximum active time. There is no automatic replay. Time spent paused or in another tab does not consume a round. “My appointment” stops the game immediately and turns sound off. Scores are per-round only; there are no leaderboards, unlocks, streaks, ads, purchases, accounts or chat.
 
-## How the brief's guardrails are implemented
+## Running locally
 
-- **No failure states.** No timers, scores, levels, or lose messages. A non-match
-  simply turns back over; the app's tic-tac-toe opponent is deliberately
-  imperfect and varied so a child wins often, and a win by the app is phrased as
-  an invitation to play again.
-- **Stop at any moment.** A large *Games* button is always in the header, and
-  leaving an activity never costs progress.
-- **Sound off by default.** Audio is quiet synthesized tones, is never assumed,
-  and the preference is intentionally not persisted, so every open starts silent.
-- **No flashing, no rapid motion.** Reveals fade, cards flip slowly, and
-  `prefers-reduced-motion` removes animation entirely.
-- **Visually led.** Large touch targets (nothing under 44px), first-grade-level
-  labels, and icon-first navigation. Reading is never required to play.
-- **Seated play only.** Everything is tap or short slide. No tilt, no camera, no
-  augmented reality, no precise gestures.
-- **No identifiable data.** No accounts, no names, no appointment details, no
-  location, no network calls. See below.
-- **No brand assets.** All artwork is inline SVG drawn for this prototype. No
-  Lurie logos, photographs, or characters are used — those require confirmed
-  permission and approved files.
-- **Light and offline-friendly.** No images or icon fonts to download; the whole
-  bundle is well under 100 kB gzipped.
-
-## Pilot measurement
-
-The brief asks the design to *enable* engagement data collection while collecting
-nothing identifiable. The footer's **Pilot data** panel shows anonymous counters
-kept in `localStorage` only: app opens, activity switches, and per-activity opens,
-time, and completions. Nothing is transmitted, and the panel can copy the JSON or
-clear it. Swapping the functions in `src/game/analytics.ts` for real endpoints is
-the only change needed to report to a pilot backend.
-
-## Scripts
-
-| Script | What it does |
-| --- | --- |
-| `npm run dev` | Start the Vite dev server with hot reload |
-| `npm run build` | Typecheck and produce a production build in `dist/` |
-| `npm run preview` | Serve the production build locally |
-| `npm run typecheck` | Run TypeScript with no emit |
-| `npm run smoke` | Render both routes in Node and assert key content is present |
-| `npm run tour` | Play through every activity in headless Chrome (see below) |
-
-### The tour
-
-`npm run tour` drives a real browser over the DevTools Protocol against a running
-dev server, at a 390×844 phone viewport. It checks touch target sizes, that no
-layout overflows horizontally, that taps reveal friends, that cards flip, that the
-maze character follows a finger without entering a wall, that a win is phrased
-kindly, that sound starts off, and that counters increment without recording
-identifiers. Screenshots land in `.shots/`.
-
-```bash
-npm run dev            # in one terminal
-npm run tour           # in another; defaults to http://localhost:5180
-npm run tour -- http://localhost:5173
+```sh
+npm ci
+npm run dev -- --host 127.0.0.1 --port 5173
 ```
 
-It requires Google Chrome installed at the standard macOS path.
+Routes: `/` is the game library. `/#brief` retains the original stakeholder brief for reference. The earlier brief's no-timer/no-score decisions are superseded by this redesign's short, low-pressure rounds. The player-facing “How it works” explains the current behavior.
 
-## Project structure
-
-```
-index.html                Document shell, favicon, font links
-public/favicon.svg
-src/
-  main.tsx                React entry point
-  App.tsx                 Hash routing between the game and the brief
-  styles.css              Brief styles
-  game/
-    GameApp.tsx           Shell: header, menu, activity switching, time tracking
-    gameList.ts           The activity menu as data
-    creatures.tsx         The shared cast, drawn as inline SVG
-    scenes.tsx            Waiting room and clinic room artwork plus tap targets
-    ui.tsx                Shared play-screen pieces (stage, room picker, dots)
-    analytics.ts          Anonymous on-device counters
-    sound.ts              Optional quiet audio, off by default
-    PilotData.tsx         Staff-facing view of the counters
-    game.css              Child-facing styles
-    games/                One file per activity
-  brief/BriefPage.tsx     The brief page composition
-  content/brief.ts        All brief copy as typed data
-  components/, sections/, hooks/   Brief UI
-scripts/                  smoke.mjs, tour.mjs, probe.mjs, shots.sh
+```sh
+npm run build       # TypeScript and production Vite build
+npm run preview     # Serve the production build
+npm test            # Pure rules, generated puzzles and timing invariants
+npm run smoke       # Render both routes and verify core content
+npm run test:e2e    # Desktop + emulated phone Chrome tests; keep dev server running
 ```
 
-## Editing
+The browser suite uses installed Chrome (`channel: chrome`). If needed, install it or adjust the browser channel in `playwright.config.ts`. It writes screenshots and a JSON report to `artifacts/`. Failure traces go to `test-results/`. These directories are ignored by Git.
 
-- **Activity copy and the menu:** `src/game/gameList.ts`.
-- **Room artwork and what hides where:** `src/game/scenes.tsx`. Art is drawn in a
-  400×260 viewBox; hotspot coordinates use the same units, so a tap target always
-  lines up with the object at any screen size.
-- **Characters:** `src/game/creatures.tsx`. Adding a `CreatureKind` makes it
-  available to every activity at once.
-- **Brief text:** `src/content/brief.ts`.
+## Behavior and accessibility
 
-## Status and known gaps
+- Sound is off on every app load, uses quiet synthesized tones, and is never required to play. Fonts and imagery are served locally.
+- “Less motion” begins with the operating-system preference. It removes decorative motion; Sky Dash changes to a steadier overhead view. Track-item motion remains essential to that game.
+- Every game supports keyboard and touch controls. The appointment button remains labeled on phones. Interactive controls have visible focus, with explicit feedback for matching, turns, hints and results.
+- Native modal focus handling in the staff data panel. Opening it pauses the game; closing it leaves the game paused until the player resumes.
+- WebGL failure or context loss switches the adventures to a playable flat view. Scenes dispose their geometries, materials, renderer, observers, events and animation frame on exit.
+- A monotonic active-play clock has one completion guard, so StrictMode, delayed callbacks and throttled tabs cannot record a completion twice.
 
-Draft prototype for team alignment and usability testing, not a patient-facing
-product. Deliberately out of scope for now, per the brief: hospital system
-integration, approved Lurie artwork, real analytics endpoints, a word search for
-older children, and the QR-code entry point (any static host will serve the built
-`dist/` behind a short link).
+## Data
+
+No patient information is requested. The retained pilot counters record only aggregate app opens, game starts, active seconds and rounds finished in `localStorage` under `mvp.pilot.v1`. “Rounds finished” includes a round ended by its time cap; an appointment exit does not count as a finished round. Counters can be copied or cleared. Malformed or unavailable storage cannot block play. The game code sends no analytics to a server.
+
+## Implementation
+
+- `src/game/GameApp.tsx`: library, categories, sound/motion controls, appointment exit.
+- `src/game/GameSession.tsx`: instructions, round lifecycle, pause, results, lazy 3D loading.
+- `src/game/roundClock.ts`: pause-aware monotonic clock.
+- `src/game/logic.ts`: pure, injectable-randomness game rules.
+- `src/game/games/ThreeGames.tsx`: actual Three.js worlds and playable graphics fallbacks.
+- `src/game/games/`: each activity's input and display.
+- `src/game/playroom.css`: redesigned responsive UI and game styling.
+- `tests/logic.test.ts` and `tests/e2e/playroom.spec.ts`: repeatable verification.
+- `public/art/PROVENANCE.md`: exact prompts for both original cover images.
+
+The original editable room and creature illustrations are retained for discovery play. Generated art is cover art, not a screenshot of the 3D gameplay. Cover files are WebP, approximately 177 KB and 218 KB; 3D code loads only when selecting a 3D game.
+
+## Validation scope
+
+The rule suite checks hundreds of maze and word-search seeds, every reachable nonterminal tic-tac-toe board, merge conservation and single-merge rules, memory input locking, collision and jump timing, stale planet targets, optional bonuses, device counters and pause timing. Browser tests cover all ten game flows, complete playthroughs, touch/keyboard controls, time caps, appointment exits, hidden tabs, motion preferences, graphics fallbacks, storage failure, accessibility, and responsive layouts.
+
+These tests establish the implemented behavior. They do not establish clinical effectiveness or enjoyment for every patient. Physical iOS/Safari, screen-reader user testing, and observation with patients and hospital staff have not been performed.
+
+## Hosting
+
+This workspace is configured for static Sites hosting through `.openai/hosting.json`. The production artifact is `dist/`; no server database or secret is needed. The Sites deployment is initially private to the owner.
+
+Technical references: [Three.js scene setup](https://threejs.org/manual/en/creating-a-scene.html), [Three.js resource cleanup](https://threejs.org/manual/en/cleanup.html), and [Playwright clock testing](https://playwright.dev/docs/clock).

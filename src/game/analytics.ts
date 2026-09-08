@@ -8,6 +8,10 @@
  */
 
 export type GameId =
+  | 'sky'
+  | 'orbit'
+  | 'merge'
+  | 'words'
   | 'explore'
   | 'ispy'
   | 'matching'
@@ -34,7 +38,14 @@ function read(): PilotStats {
     if (!raw) return { ...empty, games: {} }
     const parsed = JSON.parse(raw) as PilotStats
     if (parsed?.version !== 1) return { ...empty, games: {} }
-    return { ...empty, ...parsed, games: parsed.games ?? {} }
+    const count = (value: unknown) => typeof value === 'number' && Number.isFinite(value) && value >= 0 ? Math.floor(value) : 0
+    const games: PilotStats['games'] = {}
+    const ids: GameId[] = ['sky','orbit','maze','matching','merge','tictactoe','words','ispy','explore','dance']
+    for (const id of ids) {
+      const game = parsed.games?.[id]
+      if (game && typeof game === 'object') games[id] = { starts: count(game.starts), seconds: count(game.seconds), finishes: count(game.finishes) }
+    }
+    return { version: 1, sessions: count(parsed.sessions), switches: count(parsed.switches), games }
   } catch {
     return { ...empty, games: {} }
   }

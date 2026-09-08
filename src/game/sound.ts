@@ -17,6 +17,28 @@ const cues: Record<Cue, { notes: number[]; gain: number; step: number }> = {
 
 let enabled = false
 let ctx: AudioContext | null = null
+let paused = false
+const activeNotes = new Set<OscillatorNode>()
+export function setAudioPaused(next: boolean) {
+  paused = next
+  if (next) for (const osc of activeNotes) { try { osc.stop() } catch { /* Already ended. */ } }
+}
+export function playNote(frequency: number) {
+  if (!enabled || paused || activeNotes.size >= 8) return
+  try {
+    ctx ??= new AudioContext()
+    if (ctx.state === 'suspended') void ctx.resume().catch(() => {})
+    const oscillator=ctx.createOscillator(),gain=ctx.createGain(),start=ctx.currentTime
+    oscillator.frequency.value=frequency
+    gain.gain.setValueAtTime(0,start)
+    gain.gain.linearRampToValueAtTime(.045,start+.025)
+    gain.gain.exponentialRampToValueAtTime(.0001,start+.3)
+    oscillator.connect(gain).connect(ctx.destination)
+    activeNotes.add(oscillator)
+    oscillator.onended=()=>{activeNotes.delete(oscillator);oscillator.disconnect();gain.disconnect()}
+    oscillator.start(start);oscillator.stop(start+.32)
+  } catch { /* Sound is optional. */ }
+}
 
 export function isSoundOn() {
   return enabled
@@ -25,19 +47,20 @@ export function isSoundOn() {
 export function setSoundOn(next: boolean) {
   enabled = next
   if (!next && ctx) {
-    void ctx.suspend()
+    for (const osc of activeNotes) { try { osc.stop() } catch { /* Already ended. */ } }
+    void ctx.suspend().catch(() => {})
   }
   if (next) {
-    void ctx?.resume()
+    void ctx?.resume().catch(() => {})
   }
 }
 
 export function playCue(cue: Cue) {
-  if (!enabled) return
+  if (!enabled || paused || activeNotes.size >= 8) return
 
   try {
     ctx ??= new AudioContext()
-    if (ctx.state === 'suspended') void ctx.resume()
+    if (ctx.state === 'suspended') void ctx.resume().catch(() => {})
 
     const { notes, gain, step } = cues[cue]
     notes.forEach((freq, i) => {
@@ -53,6 +76,8 @@ export function playCue(cue: Cue) {
       amp.gain.exponentialRampToValueAtTime(0.0001, start + 0.34)
 
       osc.connect(amp).connect(ctx!.destination)
+      activeNotes.add(osc)
+      osc.onended = () => { activeNotes.delete(osc); osc.disconnect(); amp.disconnect() }
       osc.start(start)
       osc.stop(start + 0.36)
     })

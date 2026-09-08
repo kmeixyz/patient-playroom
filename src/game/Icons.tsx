@@ -1,0 +1,6 @@
+import { ArrowLeft, ArrowRight, ArrowUp, ArrowDown, ArrowUpRight, Play, Pause, SpeakerSlash, SpeakerHigh, GameController, Planet, PuzzlePiece, Leaf, Users, Sparkle, Clock, HandWaving, Check, X, Heart, SlidersHorizontal, Path, Cards, SquaresFour, GridNine, TextAa, Eye, Compass, MusicNotes, Star, Flag, ArrowCounterClockwise, House, Info, Keyboard, HandTap, DiamondsFour } from '@phosphor-icons/react'
+const icons = { back: ArrowLeft, right: ArrowRight, up: ArrowUp, down: ArrowDown, external: ArrowUpRight, play: Play, pause: Pause, mute: SpeakerSlash, sound: SpeakerHigh, game: GameController, planet: Planet, puzzle: PuzzlePiece, leaf: Leaf, users: Users, sparkle: Sparkle, clock: Clock, wave: HandWaving, check: Check, close: X, heart: Heart, settings: SlidersHorizontal, path: Path, cards: Cards, squares: SquaresFour, grid: GridNine, letters: TextAa, eye: Eye, compass: Compass, music: MusicNotes, star: Star, flag: Flag, restart: ArrowCounterClockwise, home: House, info: Info, keyboard: Keyboard, tap: HandTap, gem: DiamondsFour }
+export function Icon({ name, size = 22, className = '', weight = 'bold' }: {name: string; size?: number; className?: string; weight?: 'bold' | 'fill' | 'regular'}) {
+  const Component = icons[name as keyof typeof icons] ?? Sparkle
+  return <Component size={size} weight={weight} className={className} aria-hidden="true" />
+}

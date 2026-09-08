@@ -1,57 +1,17 @@
 import type { GameId } from './analytics'
 import type { CreatureKind } from './creatures'
-
-export type GameEntry = {
-  id: GameId
-  /** Short, first-grade-readable label. */
-  name: string
-  /** One-line hint for caregivers; the child does not need to read it. */
-  hint: string
-  face: CreatureKind
-  accent: 'blue' | 'coral' | 'teal' | 'violet' | 'amber' | 'pink'
-}
-
+export type Category = 'All games' | '3D adventures' | 'Brain teasers' | 'Chill zone' | 'Play together'
+export type GameEntry = { id: GameId; name: string; hint: string; category: Category; seconds: number; color: string; icon: string; face: CreatureKind; accent: string; controls: string; mission: string; tag: string }
 export const gameList: GameEntry[] = [
-  {
-    id: 'explore',
-    name: 'Look around',
-    hint: 'Tap things in the room to find hidden friends',
-    face: 'owl',
-    accent: 'blue',
-  },
-  {
-    id: 'ispy',
-    name: 'I spy',
-    hint: 'Find five friends hiding in the room',
-    face: 'duck',
-    accent: 'teal',
-  },
-  {
-    id: 'matching',
-    name: 'Find pairs',
-    hint: 'Turn over cards and match the pairs',
-    face: 'bunny',
-    accent: 'pink',
-  },
-  {
-    id: 'tictactoe',
-    name: 'Three in a row',
-    hint: 'Play with the app or with a grown-up',
-    face: 'star',
-    accent: 'amber',
-  },
-  {
-    id: 'maze',
-    name: 'Maze',
-    hint: 'Slide a friend through to the flag',
-    face: 'dino',
-    accent: 'violet',
-  },
-  {
-    id: 'dance',
-    name: 'Silly dance',
-    hint: 'Tap a friend to make them move',
-    face: 'cat',
-    accent: 'coral',
-  },
+  { id: 'sky', name: 'Sky Dash', hint: 'Catch a little air. Collect a lot of gems.', category: '3D adventures', seconds: 75, color: 'mint', icon: 'planet', face: 'dino', accent: 'teal', controls: 'Use ← → or A / D to steer. Space or ↑ to jump. On a phone, tap the big controls.', mission: 'Ride the floating track, collect gold gems, and steer around coral blocks. Bumps never end your ride.', tag: '75 sec ride' },
+  { id: 'orbit', name: 'Orbit Pop', hint: 'A tiny mission in a very big universe.', category: '3D adventures', seconds: 60, color: 'blue', icon: 'planet', face: 'owl', accent: 'blue', controls: 'Tap a planet, or use Tab and Enter on the numbered planet controls.', mission: 'Collect 18 planets to power your robot’s orbit. Each pop sends a new planet into space.', tag: '60 sec mission' },
+  { id: 'maze', name: 'Maze Quest', hint: 'One little explorer. Your way out.', category: 'Brain teasers', seconds: 180, color: 'purple', icon: 'path', face: 'dino', accent: 'violet', controls: 'Use arrow keys, W A S D, the direction buttons, or swipe one step at a time.', mission: 'Find the flag through a fresh maze. Walls are solid. A hint shows your next step whenever you need it.', tag: 'Up to 3 min' },
+  { id: 'matching', name: 'Match Club', hint: 'Good memory? Let’s flip and find out.', category: 'Brain teasers', seconds: 180, color: 'pink', icon: 'cards', face: 'bunny', accent: 'pink', controls: 'Tap or select two cards. A non-match turns back over after a moment.', mission: 'Find all six pairs. There is no penalty for taking another look.', tag: 'Up to 3 min' },
+  { id: 'merge', name: 'Merge 128', hint: 'Slide. Combine. Make something bigger.', category: 'Brain teasers', seconds: 180, color: 'yellow', icon: 'squares', face: 'star', accent: 'amber', controls: 'Use arrow keys, swipe, or tap the direction buttons.', mission: 'Slide matching numbers together to make 128. Each tile can merge once per move. One undo is always available.', tag: 'Up to 3 min' },
+  { id: 'tictactoe', name: 'Three in a Row', hint: 'You, a friend, and a little friendly rivalry.', category: 'Play together', seconds: 120, color: 'orange', icon: 'grid', face: 'star', accent: 'amber', controls: 'Tap an empty square. You are X. Get three in a row, column, or diagonal.', mission: 'Play against the app, or pass the device to someone beside you. A single board makes a complete round.', tag: 'Up to 2 min' },
+  { id: 'words', name: 'Word Scout', hint: 'A small grid. A few hidden discoveries.', category: 'Brain teasers', seconds: 180, color: 'mint', icon: 'letters', face: 'owl', accent: 'teal', controls: 'Tap the first and last letters of a word. Words run in straight lines, including diagonals and backwards.', mission: 'Find five space words. Tap Hint for the start of a word you haven’t found.', tag: 'Up to 3 min' },
+  { id: 'ispy', name: 'Hidden Friends', hint: 'They’re in here somewhere. Look closer.', category: 'Chill zone', seconds: 120, color: 'blue', icon: 'eye', face: 'duck', accent: 'blue', controls: 'Tap the hidden friends in the scene. Need a hand? Tap Help.', mission: 'Spot five friends in the waiting room or clinic room. Pick either scene.', tag: 'Up to 2 min' },
+  { id: 'explore', name: 'Room Explorer', hint: 'Little surprises, waiting to be found.', category: 'Chill zone', seconds: 120, color: 'purple', icon: 'compass', face: 'cat', accent: 'violet', controls: 'Tap objects in the room to see who is hiding there.', mission: 'Explore at your own pace. Find every hidden friend, or leave whenever you like.', tag: 'Up to 2 min' },
+  { id: 'dance', name: 'Beat Garden', hint: 'Make a little music. Find your groove.', category: 'Chill zone', seconds: 60, color: 'pink', icon: 'music', face: 'cat', accent: 'coral', controls: 'Tap the pads, or press 1, 2, 3, and 4. Sound is optional.', mission: 'Mix four sounds into your own mini jam. Each tap makes a friend dance, even with sound off.', tag: '60 sec jam' },
 ]
+export const categories: Category[] = ['All games', '3D adventures', 'Brain teasers', 'Chill zone', 'Play together']

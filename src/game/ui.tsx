@@ -14,7 +14,7 @@ export function SceneStage({
 }) {
   return (
     <div className="g-stage">
-      <svg viewBox="0 0 400 260" className="g-stage__svg" role="img" aria-label={label}>
+      <svg viewBox="0 0 400 260" className="g-stage__svg" role="group" aria-label={label}>
         {art}
         {children}
       </svg>
@@ -51,7 +51,7 @@ export function RoomPicker({
 /** Progress as plain dots: shows how much is left without implying a score. */
 export function FoundDots({ total, found }: { total: number; found: number }) {
   return (
-    <div className="g-dots" aria-label={`${found} of ${total} found`}>
+    <div className="g-dots" role="img" aria-label={`${found} of ${total} found`}>
       {Array.from({ length: total }, (_, i) => (
         <span key={i} className={`g-dot ${i < found ? 'is-on' : ''}`} />
       ))}

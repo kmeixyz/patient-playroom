@@ -1,4 +1,9 @@
 node_modules
+.npm-cache
+.playwright-cli
+test-results
+playwright-report
+artifacts
 dist
 .shots
 dist-ssr
@@ -8,3 +13,6 @@ dist-ssr
 .vite
 npm-debug.log*
 yarn-error.log*
+*.openai
+*.claude
+*.gemini

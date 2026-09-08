@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   getStats,
   resetStats,
@@ -19,6 +19,9 @@ function minutes(seconds: number) {
  */
 export function PilotData({ onClose }: { onClose: () => void }) {
   const [stats, setStats] = useState<PilotStats>(getStats)
+  const dialog = useRef<HTMLDialogElement>(null)
+  const [copyStatus, setCopyStatus] = useState('')
+  useEffect(() => { const el=dialog.current;el?.showModal();return()=>el?.close() }, [])
 
   useEffect(() => subscribe(setStats), [])
 
@@ -31,7 +34,7 @@ export function PilotData({ onClose }: { onClose: () => void }) {
   const totalSeconds = rows.reduce((sum, row) => sum + row.seconds, 0)
 
   return (
-    <div className="g-sheet" role="dialog" aria-modal="true" aria-label="Pilot data">
+    <dialog ref={dialog} className="g-sheet" aria-label="Pilot data" onCancel={onClose}>
       <div className="g-sheet__panel">
         <header className="g-sheet__head">
           <h2>Pilot data on this device</h2>
@@ -67,7 +70,7 @@ export function PilotData({ onClose }: { onClose: () => void }) {
               <th scope="col">Activity</th>
               <th scope="col">Opens</th>
               <th scope="col">Time</th>
-              <th scope="col">Completions</th>
+              <th scope="col">Rounds finished</th>
             </tr>
           </thead>
           <tbody>
@@ -86,8 +89,9 @@ export function PilotData({ onClose }: { onClose: () => void }) {
           <button
             type="button"
             className="g-btn g-btn--quiet"
-            onClick={() => {
-              void navigator.clipboard?.writeText(JSON.stringify(stats, null, 2))
+            onClick={async () => {
+              try { await navigator.clipboard.writeText(JSON.stringify(stats, null, 2)); setCopyStatus('Copied.') }
+              catch { setCopyStatus('Copy is unavailable in this browser.') }
             }}
           >
             Copy as JSON
@@ -96,7 +100,8 @@ export function PilotData({ onClose }: { onClose: () => void }) {
             Clear data
           </button>
         </div>
+        <p role="status">{copyStatus}</p>
       </div>
-    </div>
+    </dialog>
   )
 }

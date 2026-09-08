@@ -24,7 +24,7 @@ export default function App() {
     document.title =
       route === 'brief'
         ? 'Design brief — Pediatric Outpatient Waiting-Room Game'
-        : 'Waiting Room Playground'
+        : 'Patient Playroom — A little adventure while you wait'
   }, [route])
 
   return route === 'brief' ? <BriefPage /> : <GameApp />
