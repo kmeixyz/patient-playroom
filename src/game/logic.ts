@@ -24,7 +24,7 @@ export function placeMark(board:Mark[],index:number,mark:Exclude<Mark,null>):Mar
 export function computerMove(board:Mark[],rng:RNG=Math.random):number|null {if(boardOver(board))return null;const empty=board.map((v,i)=>v===null?i:-1).filter(i=>i>=0);for(const mark of ['O','X'] as const){const win=empty.find(i=>winner(placeMark(board,i,mark))===mark);if(win!==undefined)return win}if(!board[4])return 4;return empty[Math.floor(rng()*empty.length)]!}
 
 export type MemoryState={deck:string[];open:number[];matched:number[];turns:number}
-export function memoryDeal(rng:RNG=Math.random):MemoryState{return{deck:shuffle(['star','heart','planet','leaf','music','gem'].flatMap(k=>[k,k]),rng),open:[],matched:[],turns:0}}
+export function memoryDeal(rng:RNG=Math.random,pairs:3|6=6):MemoryState{return{deck:shuffle(['star','heart','planet','leaf','music','gem'].slice(0,pairs).flatMap(k=>[k,k]),rng),open:[],matched:[],turns:0}}
 export function memoryFlip(state:MemoryState,index:number):MemoryState {if(index<0||index>=state.deck.length||state.open.length>=2||state.open.includes(index)||state.matched.includes(index))return state;const open=[...state.open,index];if(open.length===1)return{...state,open};if(state.deck[open[0]!]===state.deck[index])return{...state,open:[],matched:[...state.matched,...open],turns:state.turns+1};return{...state,open,turns:state.turns+1}}
 
 export function mergeLine(values:number[]):{line:number[];score:number}{const packed=values.filter(Boolean),line:number[]=[];let score=0;for(let i=0;i<packed.length;i++){if(packed[i]===packed[i+1]){const n=packed[i]!*2;line.push(n);score+=n;i++}else line.push(packed[i]!)}while(line.length<values.length)line.push(0);return{line,score}}

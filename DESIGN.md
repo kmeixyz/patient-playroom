@@ -1,28 +1,33 @@
 # Patient Playroom design system
 
 ## Direction
-A bright pocket arcade for a waiting room: original 3D adventure covers, tactile puzzle previews, expressive but legible lettering, and a quiet frame around the action. Kid friendly without using nursery copy or rewards that make leaving costly.
+A welcoming game shelf for pediatric waiting rooms. Calm, Apple-inspired surfaces and familiar controls surround colorful illustrations and large, tactile game pieces. Younger children have a simple starting point; older children can still choose puzzles and 3D adventures.
 
 ## First viewport and interaction
-The first screen shows a short welcome, five game filters, and two directly playable 3D features. The full ten-game library follows. Selecting a game shows its objective, controls, and bounded duration. Start is explicit; no game starts on page load. Pause, keyboard Escape, hidden-tab detection, and a labeled appointment exit give the player control. Completion is a full stop with an explicit way to set up another round.
+The welcome leads into Bubble Pop, a stationary tap-to-reveal game, alongside Sky Dash. Nine game cards follow, filtered by five calm categories. Each card has a visible play icon and a plain-language description. Starting a game is explicit. Match Club defaults to three pairs, with a six-pair option on its introduction.
+
+Pause, Escape, hidden-tab detection, and a labeled appointment exit remain available. Opening Play settings pauses an active game; closing it leaves the game paused until the player chooses Keep playing. Returning to the library focuses the selected game card. Completion never automatically starts another round.
+
+Pace choices use grouped, labeled buttons with an explicit check and pressed state. Seven games offer a short break or Take my time; the latter removes the countdown and exposes Finish this round. Café thank-you scenes wait for Next friend. Relaxed memory reveals wait for Turn them over. A How to play control pauses the round and repeats its controls in a panel that expands with text. Resume restores the previous available game control. Studio uses a three-step indicator and keeps the portrait visible after completion.
 
 ## Tokens and components
 - Display: self-hosted Fredoka Variable. Body: self-hosted Nunito Sans Variable.
-- Page #f7f8fc; ink #232c40; secondary text #596175; interaction blue #465cdb.
-- Activity colors: mint, lilac, pink, sky blue, ochre, peach. They organize activities; all controls also have text or distinct shapes.
-- Spacing follows 4/8px increments, with larger gaps between functional groups.
-- Rounded game frames; pill-shaped navigation; tangible, pressed puzzle pieces.
-- Phosphor icons throughout the new shell. Preserve the original editable creature/room art in the two discovery activities.
-- Main actions have at least 44px target height, with larger directional and 3D controls. Word-search cells shrink in width on the smallest phones to keep the whole grid available.
-- Explicit focus rings, disabled controls, paused overlays, loading and graphics-fallback states. The staff-data panel, Design brief, leaf toggle, duplicate navigation and duplicate Orbit controls have been removed.
+- Page #f7f8fa; ink #25322f; secondary text #59645f; interaction blue #375cbe.
+- Green feature surface #e4f1e7; green button #2e5f47 with white text.
+- Mint, lilac, pink, blue, yellow and peach identify game artwork; shapes and labels carry meaning independently of color.
+- Rounded game cards (22px), hero cards (26px), segmented category buttons (14px), and a native settings dialog (28px).
+- Controls have visible focus, pressed states and disabled states. Primary touch controls are at least 44px tall. Bubble targets remain stationary and at least 64px tall.
+- Bubble art reuses the original SVG creature cast inside CSS-rendered spheres; it requires no additional image download.
 
-## Responsive and motion behavior
-Four catalog columns on wide screens, three on tablets, two on most phones, one on narrow or enlarged-text layouts. The wordmark shortens and appointment text remains visible on phones. 3D scenes fit their actual containers; device pixel ratio is capped. Motion reduction automatically follows device changes and freezes decorative movement; Sky Dash uses a steadier overhead view. Functional object movement remains necessary to play Sky Dash. No flashing effects or automatic replay.
+## Comfort and accessibility
+Play settings uses familiar labeled switches with descriptions for optional sound, calmer motion, and bigger text. It supports Escape, forward/reverse focus cycling, and modal background isolation. Motion and text choices persist locally with graceful storage failure. Sound remains off at each fresh load.
 
-## UI skill synthesis
-All small style-system SKILL.md files in the installed UI catalog were read with duplicate boilerplate removed. Their shared requirements—semantic tokens, clear hierarchy, complete states, responsive behavior, readable contrast and keyboard support—were applied across the product. Incompatible aesthetic prescriptions were resolved against the user's hospital/young-teen brief rather than combining every palette and typeface.
+Device motion reduction is always honored. The app's calmer-motion preference can add motion reduction, but cannot turn off a device request. Bigger text sets the root size to 125%; layouts also support browser text enlargement. Text and essential controls remain opaque; blur is confined to the modal backdrop. These choices follow the emphasis on control size, spacing, contrast and gentle motion in [Apple’s accessibility guidance](https://developer.apple.com/design/human-interface-guidelines/accessibility).
 
-Primary contributions: friendly/clean/spacious for clarity; colorful/creative/expressive for art; sega/tetris/pacman for short arcade rounds and tactile boards; bento/roku for the library; perspective/claymorphism/fantasy/cosmic for dimensional adventures; minimal/premium/refined for restrained chrome; editorial/basic/paper for readable staff content; contemporary/material/shadcn/ant for state consistency; agentic/levels for direct outcomes; storytelling/immersive for distinct round journeys. The remaining catalog styles supplied common accessibility and consistency checks rather than conflicting visual costumes. Impeccable, design-taste, redesign-existing-projects and Playwright guidance informed implementation and QA.
+## Responsive behavior
+Four catalog columns on wide screens, three on tablets and two on most phones, with one-column cards where enlarged text needs room. On phones the wordmark shortens, settings retain an accessible name, and the appointment action displays “Called?”. Features stack vertically. Bubble Pop changes from four columns to three, while Café snack choices and Studio choices stay large and picture-led. Sky Dash retains its responsive flat graphics fallback.
 
-## Implementation truth
-Source of truth: src/game/playroom.css, src/game/mobile-accessibility.css and the game components. These notes describe the implemented design, not an approved visual mockup. Generated covers are illustrative key art; actual 3D play is rendered with Three.js. Its geometry now carries the covers’ lavender arches, curved mint road, floating islands, waterfalls, neon hoverboard, headphone robot, cratered planets and crystals. Fixed particle pools, instanced road geometry and capped pixel density keep the scenes lighter for waiting-room devices.
+## Source of truth and validation
+`src/game/playful-premium.css` builds on the shared rules in `playroom.css` and `mobile-accessibility.css`. `ComfortSettings.tsx`, `BubbleArt.tsx`, `games/Bubbles.tsx`, and the updated game/session components implement the behavior above.
+
+QA covers desktop and emulated mobile Chrome, all game intros/active/paused screens, keyboard input, appointment exit, 320px reflow, 200% text, increased text spacing, device motion changes and unavailable local storage. Automated accessibility checks are a guardrail; patient usability and physical iOS/assistive-technology testing remain separate work. See ACCESSIBILITY.md.

@@ -1,5 +1,5 @@
-import { createContext, useContext, useEffect, useRef } from 'react'
-export type GameRuntime={paused:boolean;quiet:boolean;finish:(message?:string)=>void;report:(summary:string)=>void}
+import { createContext, useContext, useEffect, useRef, type ReactNode } from 'react'
+export type GameRuntime={paused:boolean;quiet:boolean;relaxed?:boolean;finish:(message?:string,artwork?:ReactNode)=>void;report:(summary:string)=>void}
 export const GameContext=createContext<GameRuntime>({paused:false,quiet:false,finish:()=>{},report:()=>{}})
 export const useGame=()=>useContext(GameContext)
 /** A pause-aware delay: remaining time is preserved, including across StrictMode cleanup. */

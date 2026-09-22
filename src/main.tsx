@@ -7,6 +7,7 @@ import '@fontsource-variable/nunito-sans'
 import '@fontsource-variable/fredoka'
 import './game/playroom.css'
 import './game/mobile-accessibility.css'
+import './game/playful-premium.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
