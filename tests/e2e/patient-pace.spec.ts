@@ -68,7 +68,7 @@ test('relaxed memory lets a child study a mismatch before turning it back', asyn
 test('pace and help reflow with 200% text, and all relaxed game states pass automated accessibility checks', async ({ page }) => {
   test.setTimeout(90000)
   await page.goto('/')
-  for (const name of ['Bubble Pop', 'Maze Quest', 'Match Club', 'Three in a Row', 'Pattern Parade', 'Pocket Garden', 'Critter Café', 'Silly Studio']) {
+  for (const name of ['Bubble Pop', 'Maze Quest', 'Match Club', 'Three in a Row', 'Puzzle Postcards', 'Pocket Garden', 'Critter Café', 'Silly Studio']) {
     await page.getByRole('button', { name: `Play ${name}`, exact: true }).click()
     await page.getByRole('button', { name: 'Take my time No countdown', exact: true }).click()
     await page.getByRole('button', { name: 'Start playing', exact: true }).click()

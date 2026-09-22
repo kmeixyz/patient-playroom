@@ -4,21 +4,21 @@ A complete redesign of the existing React waiting-room playground for pediatric 
 
 ## Play
 
-| Game | How it works | Maximum active round |
+| Game | How it works | Optional short break |
 | --- | --- | --- |
 | Bubble Pop | Tap twelve large, stationary bubbles to reveal happy friends. No wrong taps, chasing, or reading needed during play. | 2 minutes |
 | Sky Dash | Steer a hoverboard across three lanes, collect gems, jump coral blocks, build a collection combo. Bumps never end the ride. | 75 seconds |
 | Maze Quest | Solve a fresh connected maze with arrow keys, direction buttons or one-step swipes. Hint reveals the next step. | 3 minutes |
 | Match Club | Choose three or six pairs; mismatches briefly lock input and then turn back. | 3 minutes |
 | Three in a Row | Tic-tac-toe with a tactical computer or another person on the same device. | 2 minutes |
-| Hidden Friends | Find five characters in either of two illustrated rooms; help highlights one. | 2 minutes |
-| Beat Garden | Play four musical pads and animate the original characters with taps or keys 1–4. | 60 seconds |
+| Puzzle Postcards | Assemble one of three original illustrated postcards with four or six pieces; tap a piece, then its space. Reference and optional hints stay available. | 3 minutes |
+| Pocket Garden | Choose, water and grow three flowers; keep the finished garden on the result screen. | 2 minutes |
 | Critter Café | Match each friendly customer to a picture snack. Wrong guesses are gentle prompts with no penalty. | 2 minutes |
 | Silly Studio | Make a keepsake friend by choosing a character, hat and place. Every choice is a good one. | 2 minutes |
 
-The table shows the default short-break durations. Seven puzzle, discovery and creative games also offer “Take my time” before starting: no countdown, with an explicit Finish this round button. Sky Dash and Beat Garden retain their short timed sessions. There is no automatic replay. Time spent paused or in another tab does not consume a round. “My appointment” stops the game immediately and turns sound off. Scores are per-round only; there are no leaderboards, unlocks, daily streaks, ads, purchases, accounts or chat.
+The table shows optional short-break durations. Eight games default to “Take my time”: no countdown, with an explicit Finish this round button. Players can select a short timed break before starting. Sky Dash remains a 75-second ride. There is no automatic replay. Time spent paused or in another tab does not consume a round. “My appointment” stops the game immediately and turns sound off. Scores are per-round only; there are no leaderboards, unlocks, daily streaks, ads, purchases, accounts or chat.
 
-Critter Café waits for Next friend after each snack so children can enjoy the response at their pace. Relaxed Match Club keeps mismatched cards visible until Turn them over is chosen. Silly Studio retains the finished portrait on its result screen. How to play pauses any game and shows its controls; resuming returns keyboard focus to the previous available game control.
+Bubble Pop keeps the completed board until All done. Puzzle Postcards and Pocket Garden keep the child’s finished artwork. Critter Café waits for Next friend after each snack so children can enjoy the response at their pace. Relaxed Match Club keeps mismatched cards visible until Turn them over is chosen. Silly Studio retains the finished portrait on its result screen. How to play pauses any game and shows its controls; resuming returns keyboard focus to the previous available game control.
 
 ## Running locally
 
@@ -66,7 +66,7 @@ No patient information is requested. The retained pilot counters record only agg
 - `tests/logic.test.ts` and `tests/e2e/playroom.spec.ts`: repeatable verification.
 - `public/art/PROVENANCE.md`: exact prompts for both original cover images.
 
-The original editable room and creature illustrations are retained for discovery play. Generated art is cover art, not a screenshot of the 3D gameplay. The Sky Dash world echoes its cover with segmented lavender arches, a curved mint track, floating islands, waterfalls, a glowing hoverboard and a headphone robot. Bounded particles and shared geometry keep effects lightweight. The new Café and Studio activities use local SVG illustrations so picture choices stay clear and fast on clinic Wi-Fi.
+The original creature illustrations are shared across activities. Pattern Parade was replaced with Puzzle Postcards to add spatial assembly alongside memory and snack matching; the library remains at nine. Generated art is cover art, not a screenshot of the 3D gameplay. The Sky Dash world echoes its cover with segmented lavender arches, a curved mint track, floating islands, waterfalls, a glowing hoverboard and a headphone robot. Bounded particles and shared geometry keep effects lightweight. The Postcards, Garden, Café and Studio activities use local SVG illustrations so picture choices stay clear and fast on clinic Wi-Fi.
 
 ## Validation scope
 

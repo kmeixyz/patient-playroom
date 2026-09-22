@@ -6,7 +6,7 @@ const context=await browser.newContext({viewport:{width:1440,height:1000}})
 const page=await context.newPage()
 await page.goto('http://127.0.0.1:5173/')
 const results=[]
-for(const name of ['Bubble Pop','Sky Dash','Maze Quest','Match Club','Three in a Row','Pattern Parade','Pocket Garden','Critter Café','Silly Studio']){
+for(const name of ['Bubble Pop','Sky Dash','Maze Quest','Match Club','Three in a Row','Puzzle Postcards','Pocket Garden','Critter Café','Silly Studio']){
   await page.getByRole('button',{name:`Play ${name}`,exact:true}).click();await page.getByRole('button',{name:'Start playing',exact:true}).click()
   const audit=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze()
   results.push({name,issues:audit.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>({target:n.target,html:n.html,summary:n.failureSummary}))}))})

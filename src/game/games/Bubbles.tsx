@@ -1,8 +1,8 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { CreatureIcon, type CreatureKind } from '../creatures'
 import { Icon } from '../Icons'
 import { playCue } from '../sound'
-import { useGame, useGameDelay } from '../useGame'
+import { useGame } from '../useGame'
 
 const friends: CreatureKind[] = ['bunny', 'dino', 'cat', 'owl', 'duck', 'bear', 'fish', 'star', 'bunny', 'dino', 'cat', 'duck']
 
@@ -13,11 +13,14 @@ export function Bubbles() {
   const live = useRef(popped)
   const buttons = useRef<(HTMLButtonElement | null)[]>([])
   const complete = popped.length === friends.length
-  useGameDelay(() => finish('Pop, pop, hooray! You found every friend.'), complete ? 900 : null, complete)
+  const doneRef = useRef<HTMLButtonElement>(null)
+  const keyboardAction = useRef(false)
+  useEffect(() => { if (complete && keyboardAction.current) doneRef.current?.focus({ preventScroll: true }) }, [complete])
 
-  const pop = (index: number) => {
+  const pop = (index: number, keyboard: boolean) => {
     if (paused || live.current.includes(index)) return
     const next = [...live.current, index]
+    keyboardAction.current = keyboard
     live.current = next
     setPopped(next)
     report(`${next.length} happy bubbles popped`)
@@ -25,7 +28,7 @@ export function Bubbles() {
     // Keep keyboard users moving through the board without returning to its beginning.
     const nextIndex = friends.findIndex((_, i) => i > index && !next.includes(i))
     const remaining = nextIndex < 0 ? friends.findIndex((_, i) => !next.includes(i)) : nextIndex
-    if (remaining >= 0) buttons.current[remaining]?.focus({ preventScroll: true })
+    if (keyboard && remaining >= 0) buttons.current[remaining]?.focus({ preventScroll: true })
   }
 
   return <div className="bubble-game">
@@ -33,13 +36,14 @@ export function Bubbles() {
     <div className="bubble-board" role="group" aria-label="Bubbles to pop">
       {friends.map((friend, index) => {
         const found = popped.includes(index)
-        return <button key={index} ref={el => { buttons.current[index] = el }} className={`pop-bubble bubble-color-${index % 4} ${found ? 'is-popped' : ''}`} aria-label={found ? `Bubble ${index + 1}: ${friend} found` : `Pop bubble ${index + 1}`} aria-disabled={found} tabIndex={found ? -1 : 0} onClick={() => pop(index)}>
+        return <button key={index} ref={el => { buttons.current[index] = el }} className={`pop-bubble bubble-color-${index % 4} ${found ? 'is-popped' : ''}`} aria-label={found ? `Bubble ${index + 1}: ${friend} found` : `Pop bubble ${index + 1}`} aria-disabled={found} tabIndex={found ? -1 : 0} onClick={event => pop(index, event.detail === 0)}>
           <span className="bubble-friend" aria-hidden="true"><CreatureIcon kind={friend} size={76}/></span>
           <span className="bubble-shell" aria-hidden="true"><span className="bubble-face"/></span>
           {found && <span className="bubble-found" aria-hidden="true"><Icon name="check" size={16}/></span>}
         </button>
       })}
     </div>
+    {complete && <div className="garden-actions"><button ref={doneRef} className="primary-button" onClick={() => { if (!paused) finish('Pop, pop, hooray! You found every friend.') }}>All done <Icon name="check"/></button></div>}
     <p className="bubble-feedback" role="status">{complete ? 'You found everyone! Hello, friends.' : popped.length ? `${popped.length} ${popped.length === 1 ? 'friend found' : 'friends found'}. Every bubble has a surprise!` : 'Big bubbles. Little friends. Pop any one!'}</p>
   </div>
 }

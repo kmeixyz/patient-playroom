@@ -1,8 +1,8 @@
 import {test,expect,type Page} from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import fs from 'node:fs/promises'
-const games=[['bubbles','Bubble Pop',120],['sky','Sky Dash',75],['maze','Maze Quest',180],['matching','Match Club',180],['tictactoe','Three in a Row',120],['pattern','Pattern Parade',180],['garden','Pocket Garden',120],['cafe','Critter Café',120],['studio','Silly Studio',120]]as const
-async function start(page:Page,name:string){await page.getByRole('button',{name:`Play ${name}`,exact:true}).click();await page.getByRole('button',{name:'Start playing',exact:true}).click();await expect(page.locator('.game-surface')).toBeVisible()}
+const games=[['bubbles','Bubble Pop',120],['sky','Sky Dash',75],['maze','Maze Quest',180],['matching','Match Club',180],['tictactoe','Three in a Row',120],['postcards','Puzzle Postcards',180],['garden','Pocket Garden',120],['cafe','Critter Café',120],['studio','Silly Studio',120]]as const
+async function start(page:Page,name:string){await page.getByRole('button',{name:`Play ${name}`,exact:true}).click();if(name!=='Sky Dash')await page.getByRole('button',{name:/A short break/}).click();await page.getByRole('button',{name:'Start playing',exact:true}).click();await expect(page.locator('.game-surface')).toBeVisible()}
 async function stats(page:Page,id:string){return page.evaluate(id=>JSON.parse(localStorage.getItem('mvp.pilot.v1')||'{}').games?.[id],id)}
 test.beforeEach(async({page})=>{await page.goto('/')})
 test('all game screens have accessible controls and no browser runtime errors',async({page})=>{
@@ -41,7 +41,7 @@ test('maze can be solved, cannot walk through a wall, and hints work',async({pag
   await board.focus();for(const key of steps)await page.keyboard.press(key);await expect(page.getByRole('heading',{name:'You found your way. Quest complete.'})).toBeVisible();expect((await stats(page,'maze')).finishes).toBe(1)
 })
 test('memory mismatches lock, pause retains them, and all pairs can be completed',async({page})=>{
-  await page.clock.install();await page.reload();await page.getByRole('button',{name:'Play Match Club',exact:true}).click();await page.getByRole('button',{name:'Big match 6 pairs'}).click();await page.getByRole('button',{name:'Start playing',exact:true}).click();const cards=page.locator('.memory-card'),known:Record<string,number[]>={}
+  await page.clock.install();await page.reload();await page.getByRole('button',{name:'Play Match Club',exact:true}).click();await page.getByRole('button',{name:'Big match 6 pairs'}).click();await page.getByRole('button',{name:/A short break/}).click();await page.getByRole('button',{name:'Start playing',exact:true}).click();const cards=page.locator('.memory-card'),known:Record<string,number[]>={}
   for(let i=0;i<12;i+=2){for(const index of [i,i+1]){await cards.nth(index).click();const label=(await cards.nth(index).getAttribute('aria-label'))!;const kind=label.split(': ')[1]!.split(',')[0]!;(known[kind]??=[]).push(index)}if(await cards.nth(i).evaluate(el=>!el.classList.contains('matched'))){await expect(cards.nth((i+2)%12)).toBeDisabled();if(i===0){await page.getByRole('button',{name:'Pause',exact:true}).click();await page.clock.fastForward(2000);await page.getByRole('button',{name:'Keep playing'}).click();await expect(cards.nth(i)).toHaveClass(/open/)}await page.clock.fastForward(950)}}
   for(const indices of Object.values(known)){if(await page.locator('.round-result').count())break;if(await cards.nth(indices[0]!).isEnabled()){await cards.nth(indices[0]!).click();await cards.nth(indices[1]!).click()}}
   await expect(page.getByRole('heading',{name:'All six pairs. A perfect match.'})).toBeVisible();expect((await stats(page,'matching')).finishes).toBe(1)

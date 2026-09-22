@@ -7,7 +7,7 @@ const result = await build({ stdin: { contents: "export { GameApp } from './src/
 const module = { exports: {} }
 new Function('require', 'module', 'exports', result.outputFiles[0].text)(require, module, module.exports)
 const html = renderToString(createElement(module.exports.GameApp))
-const required = ['Patient Playroom home', 'Make room for', 'Bubble Pop', 'Play settings', 'Sky Dash', 'Match Club', 'Three in a Row', 'Maze Quest', 'Critter Café', 'Silly Studio', 'Pocket Garden', 'Pattern Parade', 'Turn sound on', 'My appointment']
+const required = ['Patient Playroom home', 'Make room for', 'Bubble Pop', 'Play settings', 'Sky Dash', 'Match Club', 'Three in a Row', 'Maze Quest', 'Critter Café', 'Silly Studio', 'Pocket Garden', 'Puzzle Postcards', 'Turn sound on', 'My appointment']
 const missing = required.filter(text => !html.includes(text))
 const removed = ['Design brief', 'Pilot data', 'Less motion'].filter(text => html.includes(text))
 if (missing.length || removed.length) { console.error({ missing, removed }); process.exit(1) }

@@ -39,44 +39,16 @@ test('garden grows three chosen flowers, keeps keyboard focus and preserves the 
   await accessible(page)
 })
 
-test('parade gives a kind hint, waits for the child, and completes all four patterns', async ({ page }) => {
-  await page.clock.install()
-  await start(page, 'Pattern Parade')
-  for (let round = 0; round < 4; round++) {
-    const items = await page.locator('.pattern-sequence li').evaluateAll(nodes => nodes.map(el => el.getAttribute('aria-label')!.split(': ')[1]!))
-    // Derive the next friend from the visible repeating sequence, not hidden state.
-    const answer = round === 0 ? items[0]! : round === 1 ? items[2]! : round === 2 ? items[2]! : items[1]!
-    const wrong = page.locator('.picture-choices button').filter({ hasNotText: answer }).first()
-    await wrong.press('Enter')
-    await expect(page.getByRole('status')).toContainText(`${answer} comes next`)
-    await expect(page.locator('.choice-hint')).toContainText('Try this')
-    await accessible(page)
-    await page.getByRole('button', { name: `Choose ${answer}`, exact: true }).press('Enter')
-    await expect(page.locator('.mini-game-count')).toHaveText(`${round + 1} / 4`)
-    const next = page.getByRole('button', { name: round < 3 ? 'Next parade' : 'All done', exact: true })
-    await expect(next).toBeFocused()
-    await page.clock.fastForward(240000)
-    await expect(page.locator('.pattern-sequence li').last()).toHaveAttribute('aria-label', `${items.length}: ${answer}`)
-    await page.getByRole('button', { name: 'Pause', exact: true }).click()
-    await page.getByRole('button', { name: 'Keep playing', exact: true }).click()
-    await expect(next).toBeFocused()
-    await next.press('Enter')
-    if (round < 3) await expect(page.locator('.picture-choices button').first()).toBeFocused()
-  }
-  await expect(page.getByRole('heading', { name: 'Four happy parades. You found the patterns!' })).toBeVisible()
-  await accessible(page)
-})
-
 test('the curated menu replaces retired games and new controls reflow at enlarged text', async ({ page }) => {
   await page.goto('/')
   await expect(page.locator('.game-card')).toHaveCount(9)
-  await expect(page.getByRole('button', { name: /Play (Beat Garden|Hidden Friends)/ })).toHaveCount(0)
-  for (const name of ['Pocket Garden', 'Pattern Parade']) {
+  await expect(page.getByRole('button', { name: /Play (Beat Garden|Hidden Friends|Pattern Parade)/ })).toHaveCount(0)
+  for (const name of ['Pocket Garden', 'Puzzle Postcards']) {
     await start(page, name)
     await page.setViewportSize({ width: 320, height: 800 })
     await page.evaluate(() => { document.documentElement.style.fontSize = '200%' })
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
-    expect(await page.locator('.picture-choices button').evaluateAll(nodes => nodes.every(el => {
+    expect(await page.locator('.picture-choices button, .postcard-tray button').evaluateAll(nodes => nodes.every(el => {
       const rect = el.getBoundingClientRect()
       return rect.width >= 44 && rect.height >= 44 && el.scrollWidth <= el.clientWidth
     }))).toBe(true)

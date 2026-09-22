@@ -17,6 +17,8 @@ test('bubble pop supports keyboard play, ignores repeat pops, and completes once
   await page.getByRole('button', { name: 'Bubble 1: bunny found', exact: true }).dispatchEvent('click')
   await expect(page.locator('.bubble-count')).toHaveText('1 / 12')
   for (let i = 2; i <= 12; i++) await page.keyboard.press('Enter')
+  await expect(page.getByRole('button', { name: 'All done', exact: true })).toBeFocused()
+  await page.keyboard.press('Enter')
   await expect(page.getByRole('heading', { name: 'Pop, pop, hooray! You found every friend.' })).toBeVisible()
   const count = await page.evaluate(() => JSON.parse(localStorage.getItem('mvp.pilot.v1')!).games.bubbles.finishes)
   expect(count).toBe(1)
