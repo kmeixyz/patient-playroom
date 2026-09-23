@@ -9,7 +9,7 @@ async function start(page: Page) {
 
 test('Robot Route is new, featured, and launches the correct game', async ({ page }, info) => {
   await page.goto('/')
-  await expect(page.locator('.game-card')).toHaveCount(11)
+  await expect(page.locator('.game-card')).toHaveCount(10)
   await expect(page.locator('.game-card').first()).toHaveAccessibleName('Play Robot Route')
   await expect(page.locator('.feature-robot')).toContainText('New · Featured game')
   await expect.poll(() => page.locator('.feature-robot img').evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0)
@@ -18,8 +18,8 @@ test('Robot Route is new, featured, and launches the correct game', async ({ pag
   await expect(page.getByRole('heading', { name: 'Robot Route', exact: true })).toBeVisible()
   expect((await new AxeBuilder({ page }).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze()).violations).toEqual([])
   await page.getByRole('button', { name: 'All games', exact: true }).click()
-  await page.locator('.feature-orbit .feature-play').click()
-  await expect(page.getByRole('heading', { name: 'Orbit Pop', exact: true })).toBeVisible()
+  await page.locator('.quick-bubbles').click()
+  await expect(page.getByRole('heading', { name: 'Bubble Pop', exact: true })).toBeVisible()
 })
 
 test('edit, blocked feedback, hints and a complete animated route work', async ({ page }, info) => {

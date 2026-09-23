@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import fs from 'node:fs/promises'
 
-const games = ['Robot Route', 'Sky Dash', 'Orbit Pop', 'Maze Quest', 'Match Club', 'Merge 128', 'Three in a Row', 'Word Scout', 'Hidden Friends', 'Room Explorer', 'Beat Garden']
+const games = ['Robot Route', 'Bubble Pop', 'Sky Dash', 'Maze Quest', 'Match Club', 'Three in a Row', 'Puzzle Postcards', 'Pocket Garden', 'Critter Café', 'Silly Studio']
 const tags = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']
 
 test('WCAG 2.2 AA scans every intro, active game and pause screen', async ({ page }, info) => {
@@ -60,20 +60,17 @@ test('removed controls stay absent and motion follows the device while open', as
   await page.emulateMedia({ reducedMotion: 'no-preference' }); await expect(page.locator('html')).toHaveAttribute('data-quiet', 'false')
 })
 
-test('word search uses arrow navigation and announces selections', async ({ page }) => {
-  await page.goto('/'); await page.getByRole('button', { name: 'Play Word Scout', exact: true }).click(); await page.getByRole('button', { name: 'Start playing', exact: true }).click()
-  await expect(page.locator('.word-board button[tabindex="0"]')).toHaveCount(1)
-  await page.locator('.word-board button').first().focus(); await page.keyboard.press('ArrowRight'); await page.keyboard.press('ArrowDown')
-  await expect(page.locator('.word-board button').nth(8)).toBeFocused(); await page.keyboard.press('Enter')
-  await expect(page.locator('.word-board button').nth(8)).toHaveAttribute('aria-pressed', 'true')
+test('picture-first games keep keyboard focus and announce feedback', async ({ page }) => {
+  await page.goto('/'); await page.getByRole('button', { name: 'Play Critter Café', exact: true }).click(); await page.getByRole('button', { name: 'Start playing', exact: true }).click()
+  await page.getByRole('button', { name: 'Serve apple', exact: true }).focus(); await page.keyboard.press('Enter')
+  await expect(page.locator('.cafe-game .mini-game-feedback')).toHaveAttribute('role', 'status')
+  await page.getByRole('button', { name: 'All games', exact: true }).click(); await page.getByRole('button', { name: 'Play Silly Studio', exact: true }).click(); await page.getByRole('button', { name: 'Start playing', exact: true }).click()
+  await page.getByRole('button', { name: 'Bunny', exact: true }).focus(); await expect(page.getByRole('button', { name: 'Bunny', exact: true })).toBeFocused()
   expect((await new AxeBuilder({ page }).withTags(tags).analyze()).violations).toEqual([])
 })
 
 test('single-key shortcuts are inactive outside the focused game', async ({ page }) => {
-  await page.goto('/'); await page.getByRole('button', { name: 'Play Beat Garden', exact: true }).click(); await page.getByRole('button', { name: 'Start playing', exact: true }).click()
-  await page.getByRole('button', { name: 'Turn sound on', exact: true }).focus(); await page.keyboard.press('1')
-  await expect(page.getByText('0 beats, all yours.', { exact: true })).toBeVisible()
-  await page.getByRole('button', { name: 'All games', exact: true }).click(); await page.getByRole('button', { name: 'Play Orbit Pop', exact: true }).click(); await page.getByRole('button', { name: 'Start playing', exact: true }).click()
-  await page.getByRole('button', { name: 'Turn sound on', exact: true }).focus(); await page.keyboard.press('1')
-  await expect(page.locator('.three-hud')).toContainText('0 / 18 planets')
+  await page.goto('/'); await page.getByRole('button', { name: 'Play Sky Dash', exact: true }).click(); await page.getByRole('button', { name: 'Start playing', exact: true }).click()
+  await page.getByRole('button', { name: 'Turn sound on', exact: true }).focus(); await page.keyboard.press('d')
+  await expect(page.locator('.lane-labels .current')).toHaveText('Center')
 })
