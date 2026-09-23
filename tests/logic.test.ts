@@ -1,6 +1,46 @@
 import {describe,it,expect,vi} from 'vitest'
 import {getStats,recordStart,recordFinish} from '../src/game/analytics'
 import {RoundClock} from '../src/game/roundClock'
+import {makeRobotBoard, robotBoards, robotHint, robotSolution, robotStep, robotWon, ROBOT_COMMAND_LIMIT} from '../src/game/games/robotRouteLogic'
+
+describe('Robot Route planning', () => {
+  it('every map has a route collecting all stars before docking within the budget', () => {
+    robotBoards.forEach((_, index) => {
+      const board = makeRobotBoard(index), solution = robotSolution(board)!
+      expect(board.stars).toHaveLength(3)
+      expect(solution.length).toBeLessThanOrEqual(ROBOT_COMMAND_LIMIT)
+      let state = { at: board.start, collected: 0 }
+      for (const direction of solution) { const next = robotStep(board, state, direction); expect(next).not.toBeNull(); state = next! }
+      expect(robotWon(board, state)).toBe(true)
+      expect(robotWon(board, { at: board.dock, collected: 0 })).toBe(false)
+    })
+  })
+  it('blocks boundaries without row wrapping, rejects walls, and counts each star only once', () => {
+    const board = makeRobotBoard(0)
+    expect(robotStep(board, { at: board.start, collected: 0 }, 'left')).toBeNull()
+    expect(robotStep(board, { at: board.start, collected: 0 }, 'down')).toBeNull()
+    expect(robotStep(board, { at: 4, collected: 0 }, 'right')).toBeNull()
+    expect(robotStep(board, { at: 5, collected: 0 }, 'right')).toBeNull()
+    let state = robotStep(board, { at: 22, collected: 0 }, 'right')!
+    const collected = state.collected
+    state = robotStep(board, robotStep(board, state, 'left')!, 'right')!
+    expect(state.collected).toBe(collected)
+  })
+  it('hints repair invalid and overlong routes and repeated hints produce a complete route', () => {
+    robotBoards.forEach((_, index) => {
+      const board = makeRobotBoard(index)
+      for (const initial of [[], ['left'], Array.from({ length: 20 }, (_, i) => i % 2 ? 'left' : 'right')] as Direction[][]) {
+        let program = initial
+        for (let i = 0; i <= ROBOT_COMMAND_LIMIT; i++) program = robotHint(board, program).program
+        expect(program.length).toBeLessThanOrEqual(ROBOT_COMMAND_LIMIT)
+        let state = { at: board.start, collected: 0 }
+        for (const direction of program) state = robotStep(board, state, direction)!
+        expect(robotWon(board, state)).toBe(true)
+        expect(robotHint(board, program).program).toEqual(program)
+      }
+    })
+  })
+})
 import {advanceSky,boardOver,canSlide,computerMove,lines,makeMaze,makeSky,makeWords,mazeMove,mazePath,memoryDeal,memoryFlip,mergeLine,newMerge,newOrbit,placeMark,popOrbit,seeded,selectedWord,shuffle,skyJump,skyLane,slideBoard,spaceWords,spawnTile,wordSelection,winner,type Direction,type Mark} from '../src/game/logic'
 
 describe('maze generation and wall-safe navigation',()=>{

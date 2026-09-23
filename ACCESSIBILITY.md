@@ -4,10 +4,11 @@ Review target: [WCAG 2.2 Level AA](https://www.w3.org/WAI/WCAG22/quickref/), wit
 
 ## Coverage
 
-Every game is scanned in its instructions, active-play and paused states on desktop Chrome and emulated mobile Chrome. The automated suite uses axe-core's WCAG 2.0, 2.1 and 2.2 A/AA rules. All ten games are also checked at 320px, at 200% text size, and with increased letter spacing, word spacing, line height and paragraph spacing. Interactive game targets are checked against the 24 CSS-pixel AA minimum; primary touch controls are generally 44–58px or larger.
+Every game is scanned in its instructions, active-play and paused states on desktop Chrome and emulated mobile Chrome. The automated suite uses axe-core's WCAG 2.0, 2.1 and 2.2 A/AA rules. All eleven games are also checked at 320px, at 200% text size, and with increased letter spacing, word spacing, line height and paragraph spacing. Interactive game targets are checked against the 24 CSS-pixel AA minimum; primary touch controls are generally 44–58px or larger.
 
 | Activity | Accessibility provisions |
 | --- | --- |
+| Robot Route | Labeled map cells with coordinates and non-color symbols, touch buttons and focus-scoped arrow/WASD commands, editable command queue, live run feedback, hints, undo, clear, stop-test, pause-aware step timing and reduced-motion support. |
 | Sky Dash | Large steering/jump buttons, keyboard and swipe alternatives, textual lane and upcoming-item descriptions, live catch feedback, shape-based gem/block distinction, pause, steadier reduced-motion camera. |
 | Orbit Pop | Stationary numbered native-button targets, keyboard focus and 1–6 shortcuts, text and star-shaped bonus indication, live collection feedback, progress semantics. No duplicate button row. |
 | Maze Quest | High-contrast walls and player, keyboard and single-step touch gestures, equivalent direction buttons, hint, position announcement. |

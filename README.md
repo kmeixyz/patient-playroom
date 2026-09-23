@@ -1,11 +1,12 @@
 # Patient Playroom
 
-A complete redesign of the existing React waiting-room playground for pediatric patients, particularly young teens. Ten seated, short-session games, original cover art, genuine Three.js adventures, and an instant appointment exit.
+A React waiting-room playground for pediatric patients, particularly young teens. Eleven seated, short-session games, original cover art, genuine Three.js adventures, and an instant appointment exit. Robot Route is the newest featured game.
 
 ## Play
 
 | Game | How it works | Maximum active round |
 | --- | --- | --- |
+| Robot Route | Queue up to 20 directional commands, test and edit your route, collect three stars and reach the dock. Three solvable maps, step-by-step hints, undo and clear. | 3 minutes |
 | Sky Dash | Steer a hoverboard across three lanes, collect gems, jump coral blocks, build a collection combo. Bumps never end the ride. | 75 seconds |
 | Orbit Pop | Collect 18 planets. Follow the gold-ring bonus target for an extra spotting challenge. | 60 seconds |
 | Maze Quest | Solve a fresh connected maze with arrow keys, direction buttons or one-step swipes. Hint reveals the next step. | 3 minutes |
@@ -61,13 +62,13 @@ No patient information is requested. The retained pilot counters record only agg
 - `src/game/games/`: each activity's input and display.
 - `src/game/playroom.css`: redesigned responsive UI and game styling.
 - `tests/logic.test.ts` and `tests/e2e/playroom.spec.ts`: repeatable verification.
-- `public/art/PROVENANCE.md`: exact prompts for both original cover images.
+- `public/art/PROVENANCE.md`: exact prompts for the original cover images.
 
 The original editable room and creature illustrations are retained for discovery play. Generated art is cover art, not a screenshot of the 3D gameplay. The 3D worlds now echo the covers with segmented lavender arches, a curved mint track, floating islands, waterfalls, a glowing hoverboard, a headphone robot, orbit rings, cratered planets and crystals. Bounded particles and shared/instanced geometry keep effects lightweight. Cover files are WebP, approximately 177 KB and 218 KB; 3D code loads only when selecting a 3D game.
 
 ## Validation scope
 
-The rule suite checks hundreds of maze and word-search seeds, every reachable nonterminal tic-tac-toe board, merge conservation and single-merge rules, memory input locking, collision and jump timing, stale planet targets, optional bonuses, device counters and pause timing. Browser tests cover all ten game flows, complete playthroughs, touch/keyboard controls, time caps, appointment exits, hidden tabs, motion preferences, graphics fallbacks, storage failure, accessibility, and responsive layouts.
+The rule suite checks hundreds of maze and word-search seeds, every reachable nonterminal tic-tac-toe board, merge conservation and single-merge rules, memory input locking, collision and jump timing, stale planet targets, optional bonuses, device counters and pause timing. Browser tests cover all eleven game flows, complete playthroughs, touch/keyboard controls, time caps, appointment exits, hidden tabs, motion preferences, graphics fallbacks, storage failure, accessibility, and responsive layouts.
 
 See [ACCESSIBILITY.md](ACCESSIBILITY.md) for the criterion scope and remaining assistive-technology validation. These tests establish the implemented behavior. They do not establish clinical effectiveness or enjoyment for every patient. Physical iOS/Safari, screen-reader user testing, and observation with patients and hospital staff have not been performed.
 

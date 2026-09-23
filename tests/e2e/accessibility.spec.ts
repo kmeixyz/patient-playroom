@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import fs from 'node:fs/promises'
 
-const games = ['Sky Dash', 'Orbit Pop', 'Maze Quest', 'Match Club', 'Merge 128', 'Three in a Row', 'Word Scout', 'Hidden Friends', 'Room Explorer', 'Beat Garden']
+const games = ['Robot Route', 'Sky Dash', 'Orbit Pop', 'Maze Quest', 'Match Club', 'Merge 128', 'Three in a Row', 'Word Scout', 'Hidden Friends', 'Room Explorer', 'Beat Garden']
 const tags = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']
 
 test('WCAG 2.2 AA scans every intro, active game and pause screen', async ({ page }, info) => {

@@ -1,7 +1,7 @@
 import {test,expect,type Page} from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import fs from 'node:fs/promises'
-const games=[['sky','Sky Dash',75],['orbit','Orbit Pop',60],['maze','Maze Quest',180],['matching','Match Club',180],['merge','Merge 128',180],['tictactoe','Three in a Row',120],['words','Word Scout',180],['ispy','Hidden Friends',120],['explore','Room Explorer',120],['dance','Beat Garden',60]]as const
+const games=[['robot','Robot Route',180],['sky','Sky Dash',75],['orbit','Orbit Pop',60],['maze','Maze Quest',180],['matching','Match Club',180],['merge','Merge 128',180],['tictactoe','Three in a Row',120],['words','Word Scout',180],['ispy','Hidden Friends',120],['explore','Room Explorer',120],['dance','Beat Garden',60]]as const
 async function start(page:Page,name:string){await page.getByRole('button',{name:`Play ${name}`,exact:true}).click();await page.getByRole('button',{name:'Start playing',exact:true}).click();await expect(page.locator('.game-surface')).toBeVisible()}
 async function stats(page:Page,id:string){return page.evaluate(id=>JSON.parse(localStorage.getItem('mvp.pilot.v1')||'{}').games?.[id],id)}
 test.beforeEach(async({page})=>{await page.goto('/')})
@@ -14,7 +14,7 @@ test('Escape pauses play and keyboard focus enters the pause panel',async({page}
 test('narrow phone and zoomed text stay usable',async({page})=>{await page.setViewportSize({width:320,height:800});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await start(page,'Merge 128');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.getByRole('button',{name:'All games',exact:true}).click();await page.evaluate(()=>document.documentElement.style.fontSize='200%');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true)})
 
 test('library, categories, silence, artwork and responsive layout',async({page},info)=>{
-  await expect(page).toHaveTitle(/Patient Playroom/);await expect(page.getByRole('button',{name:'Turn sound on'})).toBeVisible();await expect(page.locator('.game-card')).toHaveCount(10)
+  await expect(page).toHaveTitle(/Patient Playroom/);await expect(page.getByRole('button',{name:'Turn sound on'})).toBeVisible();await expect(page.locator('.game-card')).toHaveCount(11)
   await page.getByRole('button',{name:'3D adventures',exact:true}).click();await expect(page.locator('.game-card')).toHaveCount(2)
   await page.getByRole('button',{name:'Chill zone',exact:true}).click();await expect(page.locator('.game-card')).toHaveCount(3)
   await page.getByRole('button',{name:'All games',exact:true}).click()

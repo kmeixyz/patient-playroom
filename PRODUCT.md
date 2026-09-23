@@ -7,7 +7,7 @@ Web. Existing React 19 + TypeScript + Vite app, retained during the redesign.
 Pediatric patients, particularly young teens, waiting for hospital appointments. Provide short, satisfying, seated activities. The user's redesign request expands the earlier young-child prototype with more engaging puzzles and genuine 3D options.
 
 ## Product requirements
-- Ten activities: two 3D adventures, four puzzles, a one/two-player board game, and three relaxed activities.
+- Eleven activities: two 3D adventures, five puzzles, a one/two-player board game, and three relaxed activities. Robot Route leads the library as the new featured game.
 - Every round ends within 60–180 seconds of active play, or sooner when its objective is complete.
 - Every activity has a direct appointment exit. No confirmation, saved streak, automatic replay, endless progression, account, ad, purchase, or social pressure.
 - Sound starts off. Motion reduction follows the device preference automatically.

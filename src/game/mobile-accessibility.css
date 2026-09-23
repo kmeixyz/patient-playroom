@@ -1,4 +1,5 @@
 /* Mobile-first refinements and contrast tokens shared by every activity. */
+.feature-robot{background:#171b56}.feature-robot>img{object-position:64% center}.feature-robot .feature-shade{background:linear-gradient(90deg,#151945e8 0%,#151945cc 35%,#15194533 75%,transparent)}.feature-new{display:inline-flex;align-items:center;gap:.4rem;background:#c7f2e1;color:#244e45;padding:.3rem .65rem;border-radius:8px;font-size:.8rem;font-weight:900}.feature-robot .feature-content h2{margin-top:1rem}.new-game-label{background:#c7f2e1;color:#244e45}.game-card:has(.new-game-label) .game-cover>img{object-position:80% center}.session[data-game=robot] .intro-art{object-position:72% center}
 :root { --sans: var(--font-body); --display: var(--font-display); --muted: #485369; --line: #d2d8e4; }
 html { -webkit-text-size-adjust: 100%; }
 body { -webkit-font-smoothing: antialiased; }
