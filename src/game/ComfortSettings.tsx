@@ -1,14 +1,14 @@
 import { useEffect, useRef } from 'react'
 import { Icon } from './Icons'
 
-export type ComfortPreferences = { calm: boolean; largeText: boolean }
+export type ComfortPreferences = { calm: boolean; largeText: boolean; solid: boolean }
 const STORAGE_KEY = 'playroom.comfort.v1'
 
 export function readComfort(): ComfortPreferences {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}')
-    return { calm: saved?.calm === true, largeText: saved?.largeText === true }
-  } catch { return { calm: false, largeText: false } }
+    return { calm: saved?.calm === true, largeText: saved?.largeText === true, solid: saved?.solid === true }
+  } catch { return { calm: false, largeText: false, solid: false } }
 }
 
 export function saveComfort(preferences: ComfortPreferences) {
@@ -43,6 +43,7 @@ export function ComfortSettings({ open, onClose, preferences, onChange, sound, o
       <button className="comfort-option" role="switch" aria-checked={sound} onClick={onSound} aria-labelledby="sound-label" aria-describedby="sound-description"><Icon name={sound ? 'sound' : 'mute'}/><span><strong id="sound-label">Game sounds</strong><small id="sound-description">Every game works with sound off.</small></span><span className="setting-switch" aria-hidden="true"/></button>
       <button className="comfort-option" role="switch" aria-checked={preferences.calm || deviceQuiet} disabled={deviceQuiet} onClick={() => onChange({ ...preferences, calm: !preferences.calm })} aria-labelledby="calm-label" aria-describedby="calm-description"><Icon name="leaf"/><span><strong id="calm-label">Calmer motion</strong><small id="calm-description">{deviceQuiet ? 'On because of your device setting.' : 'Less bouncing and gentler game effects.'}</small></span><span className="setting-switch" aria-hidden="true"/></button>
       <button className="comfort-option" role="switch" aria-checked={preferences.largeText} onClick={() => onChange({ ...preferences, largeText: !preferences.largeText })} aria-labelledby="text-label" aria-describedby="text-description"><Icon name="letters"/><span><strong id="text-label">Bigger text</strong><small id="text-description">A little extra room for reading.</small></span><span className="setting-switch" aria-hidden="true"/></button>
+      <button className="comfort-option" role="switch" aria-checked={preferences.solid} onClick={() => onChange({ ...preferences, solid: !preferences.solid })} aria-labelledby="solid-label" aria-describedby="solid-description"><Icon name="squares"/><span><strong id="solid-label">Solid backgrounds</strong><small id="solid-description">Turn off glass effects for clearer controls.</small></span><span className="setting-switch" aria-hidden="true"/></button>
     </div>
     <p className="comfort-note"><Icon name="heart" size={18}/> Your choices stay on this device. Sound starts off each visit.</p>
     <button className="primary-button" onClick={onClose}>Done <Icon name="check"/></button>

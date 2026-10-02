@@ -4,6 +4,7 @@ import AxeBuilder from '@axe-core/playwright'
 async function start(page: Page, game: string) {
   await page.goto('/')
   await page.getByRole('button', { name: `Play ${game}`, exact: true }).click()
+  await page.locator('.game-options > summary').click()
   await page.getByRole('button', { name: 'Take my time No countdown', exact: true }).click()
   await page.getByRole('button', { name: 'Start playing', exact: true }).click()
 }

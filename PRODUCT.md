@@ -13,7 +13,9 @@ Pediatric patients, from younger children to teens, waiting for hospital appoint
 - Puzzle Postcards offers three local SVG pictures and four- or six-piece puzzles. Tap-to-place controls, a persistent reference, location labels and hints make dragging unnecessary. Pocket Garden guides three flowers through visible growth steps. Both retain finished artwork.
 - Café customer changes and relaxed memory reveals advance at the child's choice. Bubble Pop keeps the completed board until All done. Finished Studio portraits stay visible on the result screen. Instructions remain available during every game through a control that pauses play.
 - Every activity has a direct appointment exit. No confirmation, saved streak, automatic replay, endless progression, account, ad, purchase, or social pressure.
-- Sound starts off. Motion reduction follows the device preference automatically. Play settings offers additional calmer motion and bigger text; these choices persist locally and tolerate unavailable storage. Opening settings pauses an active game.
+- A prominent Start playing action precedes optional setup. Results offer immediate replay, a return to all games, or an explicit change to game options. Labels stay consistent across phone and desktop.
+- Apple-inspired system typography (SF Pro on Apple devices), glass navigation and controls, opaque game surfaces, and a solid-background preference prioritize legibility.
+- Sound starts off. Motion reduction follows the device preference automatically. Play settings offers additional calmer motion, bigger text and solid backgrounds; these choices persist locally and tolerate unavailable storage. Opening settings pauses an active game.
 - Mouse, keyboard, touch, seated play. No camera, microphone, location or hospital-system access.
 - Anonymous aggregate counters remain on the device; the former staff-data interface is removed. No patient information is requested or transmitted by the game code.
 - The Design brief and unnecessary controls are removed. The library and all games are optimized for phone use.

@@ -5,6 +5,7 @@ test('taking my time removes the deadline, retains progress while paused and per
   await page.clock.install()
   await page.goto('/')
   await page.getByRole('button', { name: 'Play Bubble Pop', exact: true }).click()
+  await page.locator('.game-options > summary').click()
   await page.getByRole('button', { name: 'Take my time No countdown', exact: true }).click()
   await page.getByRole('button', { name: 'Start playing', exact: true }).click()
   await page.getByRole('button', { name: 'Pop bubble 1', exact: true }).click()
@@ -48,6 +49,7 @@ test('cafe thanks stay until the child advances and keyboard focus resumes at th
 test('relaxed memory lets a child study a mismatch before turning it back', async ({ page }) => {
   await page.clock.install(); await page.goto('/')
   await page.getByRole('button', { name: 'Play Match Club', exact: true }).click()
+  await page.locator('.game-options > summary').click()
   await page.getByRole('button', { name: 'Take my time No countdown', exact: true }).click()
   await page.getByRole('button', { name: 'Start playing', exact: true }).click()
   const cards = page.locator('.memory-card')
@@ -70,6 +72,7 @@ test('pace and help reflow with 200% text, and all relaxed game states pass auto
   await page.goto('/')
   for (const name of ['Robot Route', 'Bubble Pop', 'Maze Quest', 'Match Club', 'Three in a Row', 'Puzzle Postcards', 'Pocket Garden', 'Critter Café', 'Silly Studio']) {
     await page.getByRole('button', { name: `Play ${name}`, exact: true }).click()
+    await page.locator('.game-options > summary').click()
     await page.getByRole('button', { name: 'Take my time No countdown', exact: true }).click()
     await page.getByRole('button', { name: 'Start playing', exact: true }).click()
     expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze()).violations).toEqual([])

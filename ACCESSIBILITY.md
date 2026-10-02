@@ -25,6 +25,8 @@ Every game is scanned in its instructions, active-play and paused states on desk
 - Device `prefers-reduced-motion` is respected on load and when it changes. Decorative animations stop; essential Sky Dash track motion remains. The Play settings dialog adds a calmer-motion choice and 125% text, with native modal semantics, keyboard cycling and Escape dismissal. Device motion reduction cannot be overridden by the app.
 - Pause, Escape, tab hiding, window blur, opening Play settings and appointment exit stop active play. No automatic replay or flashing effects.
 - Solid text backgrounds in the 3D controls; darker feature-image overlays; explicit keyboard focus; non-color state indicators; forced-colors and increased-contrast styles.
+- Start is prominent before optional setup. Replay is explicit and starts fresh; returning to the library restores the launch control. Sound, settings and appointment controls retain visible labels on phones.
+- Glass controls provide a persistent Solid backgrounds preference, reduced-transparency and increased-contrast responses, and an opaque fallback. Typography uses platform system fonts, including SF Pro on Apple devices.
 - Zoom is allowed, both orientations are supported, phone safe areas are respected, and no control depends solely on hover or dragging.
 - Local game counters contain no patient information and send no analytics requests. The former staff-data interface and Design brief are removed.
 
@@ -34,4 +36,4 @@ Nine games default to Take my time with no countdown; short timed breaks are an 
 
 Automated rules do not cover all WCAG requirements. Physical iOS/Safari, VoiceOver, TalkBack, NVDA, switch access and testing with pediatric patients have not been performed. Visual search and reflex gameplay may need further alternative interactions for some players. Sky Dash retains a timed session; no claim of complete AAA conformance is made.
 
-Repeatable evidence: `tests/e2e/accessibility.spec.ts`, `tests/e2e/input-graphics.spec.ts`, `tests/e2e/comfort-bubbles.spec.ts`, `tests/e2e/playroom.spec.ts`, `tests/e2e/postcards.spec.ts`, `tests/e2e/garden-pattern.spec.ts`, `tests/e2e/robot-route.spec.ts`. Generated reports and captures are in the ignored `artifacts/` directory. A passing automated scan is reported as zero detected violations, not proof of universal accessibility.
+Repeatable evidence: `tests/e2e/accessibility.spec.ts`, `tests/e2e/input-graphics.spec.ts`, `tests/e2e/comfort-bubbles.spec.ts`, `tests/e2e/playroom.spec.ts`, `tests/e2e/postcards.spec.ts`, `tests/e2e/garden-pattern.spec.ts`, `tests/e2e/robot-route.spec.ts`, `tests/e2e/apple-flow.spec.ts`. Generated reports and captures are in the ignored `artifacts/` directory. A passing automated scan is reported as zero detected violations, not proof of universal accessibility.

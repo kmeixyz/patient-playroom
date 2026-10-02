@@ -13,6 +13,7 @@ for (const [scene, count] of [['Ocean hello', 4], ['Moon picnic', 6], ['Treehous
   test(`${scene}: assemble ${count} pieces with keyboard, gentle retries, pause, and a keepsake`, async ({ page }) => {
     await page.clock.install()
     await open(page)
+    await page.locator('.game-options > summary').click()
     await page.getByRole('button', { name: scene, exact: true }).click()
     if (count === 6) await page.getByRole('button', { name: 'Bigger puzzle 6 pieces' }).click()
     await expect(page.getByRole('button', { name: 'Take my time No countdown' })).toHaveAttribute('aria-pressed', 'true')
@@ -63,6 +64,7 @@ for (const [scene, count] of [['Ocean hello', 4], ['Moon picnic', 6], ['Treehous
 test('new default pace and bubble completion stay child controlled', async ({ page }) => {
   await page.clock.install(); await page.goto('/')
   await page.getByRole('button', { name: 'Play Bubble Pop', exact: true }).click()
+  await page.locator('.game-options > summary').click()
   await expect(page.getByRole('button', { name: 'Take my time No countdown' })).toHaveAttribute('aria-pressed', 'true')
   await page.getByRole('button', { name: 'Start playing', exact: true }).click()
   for (let i = 1; i <= 12; i++) await page.getByRole('button', { name: `Pop bubble ${i}`, exact: true }).click()
@@ -74,6 +76,7 @@ test('new default pace and bubble completion stay child controlled', async ({ pa
 
 test('postcard setup and six-piece board reflow at 320px with large text', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 800 }); await open(page)
+  await page.locator('.game-options > summary').click()
   await page.evaluate(() => { document.documentElement.style.fontSize = '200%' })
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
   await page.getByRole('button', { name: 'Bigger puzzle 6 pieces' }).click()

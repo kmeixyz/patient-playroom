@@ -63,11 +63,13 @@ test('comfort dialog pauses play, holds focus, persists choices and respects dev
 test('matching starts with a small board and offers an explicit bigger board', async ({ page }) => {
   await page.goto('/')
   await page.getByRole('button', { name: 'Play Match Club', exact: true }).click()
+  await page.locator('.game-options > summary').click()
   await expect(page.getByRole('button', { name: 'Little match 3 pairs' })).toHaveAttribute('aria-pressed', 'true')
   await page.getByRole('button', { name: 'Start playing', exact: true }).click()
   await expect(page.locator('.memory-card')).toHaveCount(6)
   await page.getByRole('button', { name: 'All games', exact: true }).click()
   await page.getByRole('button', { name: 'Play Match Club', exact: true }).click()
+  await page.locator('.game-options > summary').click()
   await page.getByRole('button', { name: 'Big match 6 pairs' }).click()
   await page.getByRole('button', { name: 'Start playing', exact: true }).click()
   await expect(page.locator('.memory-card')).toHaveCount(12)

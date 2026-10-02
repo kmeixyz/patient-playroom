@@ -75,7 +75,7 @@ test('test runs pause, stop, restart and exit immediately', async ({ page }) => 
   await expect(page.locator('.robot-board [data-robot]')).toHaveAttribute('data-cell', '20')
   await page.getByRole('button', { name: 'My appointment', exact: true }).first().click()
   await page.clock.runFor(12000)
-  await expect(page.getByRole('heading', { name: 'Go do your thing.' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'See you next time!' })).toBeVisible()
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('mvp.pilot.v1')!).games.robot.finishes)).toBe(0)
 })
 

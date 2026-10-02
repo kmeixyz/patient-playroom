@@ -1,0 +1,173 @@
+/* Web adaptation of Apple's system typography and glass control layer.
+   Play surfaces stay opaque; controls never depend on the picture behind them. */
+:root {
+  --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', 'Segoe UI', sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', sans-serif;
+  --sans: var(--font-body);
+  --display: var(--font-display);
+  --paper: #f5f6fa;
+  --ink: #1d2532;
+  --muted: #556173;
+  --line: #dce1e9;
+  --blue: #075bc7;
+  --glass: rgba(255, 255, 255, .9);
+  --glass-line: rgba(120, 139, 166, .3);
+  --glass-shadow: 0 6px 24px #2337530a, inset 0 1px 0 #fff;
+}
+html { scroll-padding-top: 125px; }
+body { font-family: var(--font-body); background: #f5f6fa; }
+.playroom { background: radial-gradient(ellipse at 15% 0, #e3edf9 0, transparent 38%), radial-gradient(ellipse at 95% 12%, #e8e8f7 0, transparent 35%); min-height: 100dvh; }
+button, summary { font-family: var(--font-body); }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 700; }
+.eyebrow { font-weight: 650; letter-spacing: .055em; color: #536277; }
+.app-header, .category-row, .session-heading, .comfort-sheet {
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(22px) saturate(1.25);
+  backdrop-filter: blur(22px) saturate(1.25);
+  border: 1px solid var(--glass-line);
+  box-shadow: var(--glass-shadow);
+}
+.app-header { position: relative; max-width: 1240px; margin: 16px auto 0; padding: .75rem 1.25rem; min-height: 72px; border-radius: 26px; gap: 1rem; }
+.brand { font-size: 1.2rem; letter-spacing: -.045em; }
+.brand-symbol { width: 42px; height: 42px; border-radius: 14px; background: #1263cb; box-shadow: inset 0 1px 1px #ffffff66, 0 4px 10px #166bc326; }
+.brand-dot { color: #075bc7; }
+.brand-patient, .brand-light { font-weight: 700; }
+.top-links button { font-size: .85rem; font-weight: 600; }
+.header-actions { gap: .35rem; }
+.header-actions .icon-button { min-height: 44px; font-size: .8rem; font-weight: 600; }
+.header-actions .icon-button:hover { background: #e5edf9; }
+.header-actions .appointment-button { background: #e7effa; border: 1px solid #bdcde5; color: #244874; font-weight: 650; min-height: 44px; }
+.library-main { padding-top: 2.25rem; }
+.welcome-row h1 { font-family: var(--font-display); font-size: clamp(2.3rem, 4vw, 3.65rem); font-weight: 750; letter-spacing: -.055em; }
+.welcome-row h1 span { color: #075bc7; }
+.welcome-row p { font-size: 1rem; color: #536177; }
+.welcome-friends>span { border-color: #f5f6fa; }
+.section-heading h2 { font-family: var(--font-display); font-size: 1.65rem; font-weight: 700; letter-spacing: -.04em; }
+.category-row { border-radius: 20px; padding: 5px; gap: 3px; }
+.category { color: #465770; font-size: .875rem; font-weight: 600; min-height: 46px; border-radius: 15px; }
+.category.active { color: #064eae; background: #fff; border: 1px solid #c5d6ed; box-shadow: 0 2px 7px #27425d14; }
+.category:hover:not(.active) { background: #e9eff8; }
+.feature-robot { border-radius: 28px; border: 1px solid #b6c6d9; }
+.feature-robot .feature-content h2 { font-family: var(--font-display); font-weight: 750; letter-spacing: -.045em; }
+.feature-robot .feature-play { background: #fff; color: #164573; border-radius: 50px; min-height: 50px; font-weight: 650; box-shadow: 0 4px 16px #001c3b24; }
+.quick-start { border-radius: 24px; border-color: #dae1eb; box-shadow: 0 3px 12px #25375705; }
+.quick-copy strong { font-family: var(--font-display); font-weight: 650; font-size: 1.2rem; letter-spacing: -.025em; }
+.quick-copy>span { line-height: 1.4; }
+.quick-copy, .feature-content { overflow-wrap: anywhere; min-width: 0; }
+.session-heading>div { min-width: 0; overflow-wrap: anywhere; }
+.game-card { border-radius: 24px; border-color: #dce2eb; box-shadow: 0 3px 12px #25375704; }
+.game-card h3 { font-weight: 700; font-family: var(--font-display); }
+.game-card:hover { border-color: #93b4df; box-shadow: 0 8px 24px #2537570d; }
+.card-open { color: #0756b3; background: #eaf1fc; font-weight: 650; }
+.card-meta { color: #526078; }
+.leave-strip { background: #eaf0f9; border-color: #dbe4f2; }
+.leave-strip h2 { font-family: var(--font-display); font-weight: 650; }
+.primary-button { background: #075bc7; border: 1px solid #075bc7; color: #fff; border-radius: 50px; min-height: 50px; font-weight: 650; box-shadow: 0 4px 10px #075bc719, inset 0 1px 0 #ffffff26; }
+.primary-button:hover:not(:disabled) { background: #054ca8; }
+.secondary-button { font-weight: 600; border-radius: 50px; border-color: #c5d0df; min-height: 46px; }
+.text-button { font-weight: 600; }
+.session-heading { border-radius: 24px; padding: .7rem 1rem; margin: 0 auto 1.2rem; max-width: 1000px; }
+.session-heading h1 { font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; letter-spacing: -.035em; }
+.session-heading>.text-button { color: #0756b3; }
+.session-heading .pause-button { background: #fff; color: #244874; }
+.round-intro { border-radius: 28px; margin: 1rem auto; box-shadow: 0 10px 40px #213b5906; }
+.intro-copy { padding: 1.8rem; gap: 1rem; }
+.intro-copy h2 { font-family: var(--font-display); font-weight: 700; letter-spacing: -.04em; font-size: 2rem; }
+.intro-copy>p { font-size: 1rem; line-height: 1.55; }
+.start-block { width: 100%; display: grid; gap: .65rem; margin-block: .25rem; }
+.start-block>.primary-button { width: 100%; font-size: 1rem; }
+.start-block>span { display: flex; gap: .4rem; align-items: center; justify-content: center; color: #4f6272; font-size: .8rem; }
+.intro-help, .game-options { border: 1px solid #dbe2ec; padding: 0; background: #f7f9fc; border-radius: 17px; width: 100%; }
+.intro-help summary, .game-options>summary { display: flex; align-items: center; gap: .6rem; padding: .8rem 1rem; min-height: 50px; color: #315278; font-size: .9rem; font-weight: 600; list-style: none; cursor: pointer; }
+.game-options>summary::-webkit-details-marker { display: none; }
+.game-options>summary::after { content: '+'; font-size: 1.3rem; margin-left: auto; }
+.game-options[open]>summary::after { content: '−'; }
+.game-options>summary:focus-visible, .intro-help>summary:focus-visible { outline: 3px solid #075bc7; outline-offset: 2px; border-radius: 15px; }
+.intro-help p { padding: 0 1rem .5rem; margin: 0; }
+.game-options-content { display: grid; gap: 1.2rem; padding: 0 1rem 1rem; }
+.pace-choices button, .matching-level button { border-radius: 15px; background: #fff; font-weight: 600; }
+.pace-choices button[aria-pressed="true"], .matching-level button[aria-pressed="true"], .postcard-scenes button[aria-pressed="true"] { border-color: #2368be; background: #eaf2fc; color: #214b80; }
+.play-shell { border-radius: 26px; border-color: #d5deea; box-shadow: 0 8px 30px #18355106; }
+.round-bar { color: #405675; font-weight: 600; }
+.pause-overlay { background: #f6f8fc; }
+.pause-overlay h2, .round-result h2 { font-family: var(--font-display); font-weight: 700; letter-spacing: -.04em; }
+.pause-icon { background: #e3edf9; color: #155caf; }
+.pause-instructions { text-align: left; border-radius: 20px; }
+.comfort-sheet { border-radius: 30px; background: rgba(247, 249, 253, .97); }
+.comfort-sheet h2 { font-family: var(--font-display); font-weight: 700; }
+.comfort-options { background: white; border-color: #d5dfeb; border-radius: 20px; }
+.comfort-option { min-height: 78px; }
+.comfort-option>svg { color: #235da9; }
+.comfort-option strong { font-weight: 650; font-size: 1rem; }
+.comfort-option small { font-size: .8rem; line-height: 1.45; }
+.comfort-sheet>.primary-button { background: #075bc7; }
+.mini-game-heading h2, .bubble-game-heading h2 { font-family: var(--font-display); font-weight: 700; }
+button:focus-visible, a:focus-visible { outline: 3px solid #075bc7; outline-offset: 3px; }
+
+@media (max-width: 1280px) { .app-header { margin-inline: 1rem; } }
+@media (max-width: 760px) {
+  html { scroll-padding-top: 1rem; }
+  .app-header { margin: .6rem .6rem 0; padding: .65rem .75rem; border-radius: 23px; gap: .45rem; }
+  .app-header .brand { font-size: 1.2rem; }
+  .app-header .brand-symbol { display: none; }
+  .header-actions { margin-left: auto; gap: .25rem; flex-wrap: wrap; }
+  .app-header .header-actions .icon-button { display: flex; flex-direction: column; justify-content: center; gap: 3px; padding: .3rem .5rem; min-width: 48px; border-radius: 14px; }
+  .app-header .header-actions .icon-button span { display: inline; font-size: .6rem; }
+  .app-header .header-actions .icon-button svg { width: 20px; height: 20px; }
+  .app-header .appointment-button { padding: .55rem .65rem; font-size: .75rem; gap: .3rem; }
+  .app-header .appointment-button .appointment-long { display: inline; font-size: .72rem; }
+  .app-header .appointment-button .appointment-short { display: none; }
+  .app-header .appointment-button>svg { display: none; }
+  .library-main { padding-top: 1.6rem; }
+  .welcome-row h1 { font-size: 2.35rem; letter-spacing: -.05em; }
+  .welcome-row p { font-size: .95rem; line-height: 1.5; }
+  .welcome-friends { display: none; }
+  .category-row { width: 100%; }
+  .category { flex: 1 1 auto; justify-content: center; padding: .6rem .7rem; font-size: .8rem; }
+  .session-main { padding: .8rem .6rem; }
+  .session-heading { grid-template-columns: minmax(0, 1fr) auto; padding: .65rem .8rem; border-radius: 20px; gap: .25rem .6rem; }
+  .session-heading h1 { font-size: 1.35rem; }
+  .round-intro { border-radius: 24px; }
+  .round-intro .intro-art { height: 150px; min-height: 0; }
+  .round-intro .intro-picture, .round-intro .intro-bubbles, .round-intro .intro-icon { height: 140px; min-height: 0; max-height: 140px; }
+  .round-intro .intro-bubbles .bubble-art { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(.4); }
+  .round-intro .intro-picture .cafe-cover { height: 140px; min-height: 140px; max-width: 220px; }
+  .round-intro .intro-picture>.garden-art, .round-intro .intro-picture>.studio-portrait { width: 250px; max-height: 140px; }
+  .intro-copy { padding: 1.2rem; gap: .85rem; }
+  .intro-copy h2 { font-size: 1.6rem; }
+  .intro-copy>p { font-size: .95rem; }
+  .game-options-content { padding: 0 .75rem .85rem; }
+  .game-card { border-radius: 21px; }
+  .game-card h3 { font-size: 1.05rem; }
+  .comfort-sheet { padding: 1.2rem; }
+  .round-result h2 { font-size: 2rem; }
+}
+@media (max-width: 380px) {
+  .app-header { flex-wrap: wrap; }
+  .app-header .brand { font-size: 1.1rem; }
+  .header-actions { gap: 0; }
+  .quick-starts { grid-template-columns: minmax(0, 1fr); }
+  .session-heading:has(.pause-button:not([hidden]))>div { grid-column: 1 / -1; }
+  .session-heading>.pause-button { grid-row: 2; }
+  .app-header .header-actions .icon-button { min-width: 44px; padding-inline: .3rem; }
+  .app-header .appointment-button { margin-left: .1rem; padding-inline: .5rem; }
+}
+/* Opaque fallback also works where backdrop filtering is unsupported. */
+@supports not (backdrop-filter: blur(1px)) {
+  .app-header, .category-row, .session-heading, .comfort-sheet { background: #fff; }
+}
+html[data-solid="true"] { --glass: #fff; }
+html[data-solid="true"] .app-header, html[data-solid="true"] .category-row, html[data-solid="true"] .session-heading, html[data-solid="true"] .comfort-sheet, html[data-solid="true"] .comfort-sheet::backdrop { backdrop-filter: none; -webkit-backdrop-filter: none; background-color: #f8faff; }
+html[data-solid="true"] .comfort-sheet::backdrop { background: #2a364bcc; }
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  :root { --glass: #fff; --glass-line: #728199; --muted: #34445b; }
+  .app-header, .category-row, .session-heading, .comfort-sheet, .comfort-sheet::backdrop { backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+@media (prefers-contrast: more) {
+  button, .intro-help, .game-options, .game-card { border-color: #667994; }
+}
+@media (forced-colors: active) {
+  .app-header, .category-row, .session-heading, .comfort-sheet { background: Canvas; border-color: CanvasText; backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; }
+  .primary-button, .secondary-button, .card-open { background: ButtonFace; color: ButtonText; border-color: ButtonText; }
+  button[aria-pressed="true"], button[aria-checked="true"] { outline: 2px solid Highlight; }
+}

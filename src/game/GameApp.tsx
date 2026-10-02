@@ -37,6 +37,7 @@ export function GameApp() {
   const [help, setHelp] = useState(false)
   const quiet = deviceQuiet || preferences.calm
   const counted = useRef(false)
+  const launchControl = useRef<string | null>(null)
   const mainRef = useRef<HTMLElement>(null)
   const lastGame = useRef<string | null>(null)
 
@@ -56,16 +57,21 @@ export function GameApp() {
     return () => { delete document.documentElement.dataset.largeText }
   }, [preferences.largeText])
   useEffect(() => {
+    document.documentElement.dataset.solid = String(preferences.solid)
+    return () => { delete document.documentElement.dataset.solid }
+  }, [preferences.solid])
+  useEffect(() => {
     if (active) return // The game intro owns its focus.
-    const card = !away && !help && lastGame.current ? document.getElementById(`game-${lastGame.current}`) : null
+    const card = !away && !help && lastGame.current ? document.getElementById(launchControl.current || `game-${lastGame.current}`) : null
     ;(card || mainRef.current)?.focus({ preventScroll: !card })
   }, [active, away, help])
 
-  const launch = (game: GameEntry) => {
+  const launch = (game: GameEntry, controlId = `game-${game.id}`) => {
+    launchControl.current = controlId
     lastGame.current = game.id
     setActive(game); setAway(false); setHelp(false); window.scrollTo(0, 0)
   }
-  const home = () => { lastGame.current = null; setActive(null); setAway(false); setHelp(false); window.scrollTo(0, 0) }
+  const home = () => { setCategory('All games');lastGame.current = null; setActive(null); setAway(false); setHelp(false); window.scrollTo(0, 0) }
   const leave = () => { lastGame.current = null; setActive(null); setAway(true); setSound(false); setSoundOn(false); window.scrollTo(0, 0) }
   const toggleSound = () => { setSoundOn(!sound); setSound(!sound) }
   const updatePreferences = (next: ComfortPreferences) => { setPreferences(next); saveComfort(next) }
@@ -82,11 +88,11 @@ export function GameApp() {
       <div className="header-actions">
         <button className={`icon-button sound-button ${sound ? 'is-on' : ''}`} onClick={toggleSound} aria-label={sound ? 'Turn sound off' : 'Turn sound on'} aria-pressed={sound}><Icon name={sound ? 'sound' : 'mute'}/><span>Sound {sound ? 'on' : 'off'}</span></button>
         <button className="icon-button settings-button" onClick={() => setSettingsOpen(true)} aria-label="Play settings" aria-haspopup="dialog"><Icon name="settings"/><span>Play settings</span></button>
-        <button className="appointment-button" onClick={leave} aria-label="My appointment"><Icon name="wave"/><span className="appointment-long">My appointment</span><span className="appointment-short">Called?</span></button>
+        <button className="appointment-button" onClick={leave} aria-label="My appointment"><Icon name="wave"/><span className="appointment-long">My appointment</span><span className="appointment-short">My appointment</span></button>
       </div>
     </header>
     <main id="playroom-main" ref={mainRef} tabIndex={-1} className={active ? 'session-main' : 'library-main'}>
-      {away ? <section className="goodbye"><span className="goodbye-icon"><Icon name="wave" size={70}/></span><h1>Go do your thing.</h1><p>Your game has stopped. You’re all set for your appointment.</p><button className="primary-button" onClick={() => setAway(false)}>Back to the playroom <Icon name="right"/></button><span>We’ll be here when you’re ready.</span></section>
+      {away ? <section className="goodbye"><span className="goodbye-icon"><Icon name="wave" size={70}/></span><h1>See you next time!</h1><p>Your game has stopped. You’re all set for your appointment.</p><button className="primary-button" onClick={() => setAway(false)}>Back to the playroom <Icon name="right"/></button><span>We’ll be here when you’re ready.</span></section>
       : active ? <GameSession key={active.id} game={active} quiet={quiet} overlayOpen={settingsOpen} onLeave={leave} onBack={() => setActive(null)}/>
       : help ? <section className="how-it-works"><span className="eyebrow">Welcome to your little play break</span><h1>A little play.<br/>Whenever you need it.</h1><p>Pick a game, tap Start playing, and have a little fun while you wait.</p><div className="how-grid">{[
         ['tap', 'Start with something simple', 'Try Bubble Pop: tap a bubble and find a friend. Match Club starts with just three pairs.'],
@@ -100,16 +106,16 @@ export function GameApp() {
           <div className="welcome-friends" aria-hidden="true"><span><CreatureIcon kind="dino" size={66}/></span><span><CreatureIcon kind="bunny" size={66}/></span><span><CreatureIcon kind="owl" size={66}/></span><Icon name="sparkle" size={24}/></div>
         </section>
         {category === 'All games' && <section className="discovery-grid" aria-label="Featured adventures">
-          <article className="feature-card feature-robot"><img src="/art/robot.webp" alt="A friendly teal robot following a floating tile path toward golden stars" fetchPriority="high"/><div className="feature-shade"/><div className="feature-content"><span className="feature-new"><Icon name="sparkle" size={16} weight="fill"/> New · Featured game</span><h2>Robot Route</h2><p>You make the plan.<br/>Robot brings the stars home.</p><button className="feature-play" onClick={()=>launch(gameList.find(game=>game.id==='robot')!)}><Icon name="play" size={19} weight="fill"/> Let’s plan <span>Play your way</span></button></div></article>
+          <article className="feature-card feature-robot"><img src="/art/robot.webp" alt="A friendly teal robot following a floating tile path toward golden stars" fetchPriority="high"/><div className="feature-shade"/><div className="feature-content"><span className="feature-new"><Icon name="sparkle" size={16} weight="fill"/> New · Featured game</span><h2>Robot Route</h2><p>You make the plan.<br/>Robot brings the stars home.</p><button id="featured-robot" className="feature-play" onClick={()=>launch(gameList.find(game=>game.id==='robot')!, 'featured-robot')}><Icon name="play" size={19} weight="fill"/> Try Robot Route</button></div></article>
           <div className="quick-starts">
             <span className="eyebrow">A little play, your way</span>
-            <button className="quick-start quick-bubbles" onClick={() => launch(bubbleGame)}><span className="quick-art" aria-hidden="true"><BubbleArt/></span><span className="quick-copy"><small>JUST TAP & PLAY</small><strong>Pop into happy.</strong><span>Bubble Pop</span></span><Icon name="right" size={20}/></button>
-            <button className="quick-start quick-postcards" onClick={() => launch(postcardGame)}><span className="quick-art" aria-hidden="true"><PostcardArt/></span><span className="quick-copy"><small>NEW · A PICTURE PUZZLE</small><strong>A world in pieces.</strong><span>Puzzle Postcards</span></span><Icon name="right" size={20}/></button>
+            <button id="quick-bubbles" className="quick-start quick-bubbles" onClick={() => launch(bubbleGame, 'quick-bubbles')}><span className="quick-art" aria-hidden="true"><BubbleArt/></span><span className="quick-copy"><small>JUST TAP & PLAY</small><strong>Bubble Pop</strong><span>Tap a bubble. Meet a friend.</span></span><Icon name="right" size={20}/></button>
+            <button id="quick-postcards" className="quick-start quick-postcards" onClick={() => launch(postcardGame, 'quick-postcards')}><span className="quick-art" aria-hidden="true"><PostcardArt/></span><span className="quick-copy"><small>NEW · A PICTURE PUZZLE</small><strong>Puzzle Postcards</strong><span>Make a picture, piece by piece.</span></span><Icon name="right" size={20}/></button>
             <p className="discovery-note"><Icon name="heart" size={17}/> {sound ? 'A little sound. A lot of imagination.' : 'Sound off. Imagination on.'}</p>
           </div>
         </section>}
         <section className="games-section" aria-label="Game library">
-          <div className="section-heading"><div><h2>Find your kind of fun</h2><p>Something for every little mood.</p></div><span className="library-count" aria-live="polite">{visible.length} games to explore <Icon name="sparkle" size={18}/></span></div>
+          <div className="section-heading"><div><h2>Find your kind of fun</h2><p>Tap a game to see how to play.</p></div><span className="library-count" aria-live="polite">{visible.length} games to explore <Icon name="sparkle" size={18}/></span></div>
           <div className="category-row" role="group" aria-label="Filter games">{categories.map((c, i) => <button key={c} className={`category ${category === c ? 'active' : ''}`} aria-pressed={category === c} onClick={() => setCategory(c)}><Icon name={['game', 'planet', 'puzzle', 'leaf', 'users'][i]!}/>{c}</button>)}</div>
           <div className="game-grid">{visible.map(game => <button key={game.id} id={`game-${game.id}`} className={`game-card theme-${game.color}`} onClick={() => launch(game)} aria-label={`Play ${game.name}`} aria-describedby={`game-hint-${game.id}`}>
             <div className="game-cover" aria-hidden="true"><GameCover game={game}/>{game.id === 'robot' && <span className="dimension-label new-game-label">New</span>}{game.id === 'garden' && <span className="dimension-label">CREATE</span>}{game.id === 'postcards' && <span className="dimension-label">NEW</span>}{['sky'].includes(game.id) && <span className="dimension-label">3D</span>}</div>
