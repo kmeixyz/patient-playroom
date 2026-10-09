@@ -1,0 +1,58 @@
+# Dependencies
+node_modules
+.npm-cache
+
+# Build output
+dist
+dist-ssr
+.vite
+*.tsbuildinfo
+
+# Tests and dev tooling
+tests
+scripts
+coverage
+test-results
+playwright-report
+.playwright-cli
+playwright*.config.*
+vitest.config.*
+
+# Screenshots and scratch output
+artifacts
+.shots
+
+# Docs (only the README is kept)
+*.md
+!README.md
+
+# AI tools
+.claude
+.codex
+.openai
+.gemini
+.cursor
+.cursorrules
+.cursorignore
+.windsurf
+.windsurfrules
+.continue
+.clinerules
+.roo
+.kiro
+.aider*
+.agents
+.impeccable
+.mcp.json
+
+# Environment and logs
+.env
+.env.*
+*.local
+npm-debug.log*
+yarn-error.log*
+
+# OS and editors
+.DS_Store
+.vscode
+.idea
